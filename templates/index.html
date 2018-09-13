@@ -25,6 +25,31 @@
             <h5>Recent Reports</h5>
             <hr />
         </div>
+        
+        {% if object_list %}
+            {% for report in object_list %}
+            <div class="col-sm-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            {{ report.emergency }}
+                            <span class="badge badge-primary float-right">{{ report.verifies.count }}</span>
+                        </h4>
+                        <hr class="my-3">
+                        <ul class="list-unstyled">
+                            <li>Reporter : {{ report.reporter }}</li>
+                            <li>Occured : {{ report.timestamp|timesince }} ago</li>
+                            <li>Location : {{ report.address }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="col-sm-12 mb-3">
+            <h5>No Recent Reports!</h5>
+        </div>
+        {% endif %}
     </div>
 </div>
 
@@ -32,7 +57,30 @@
     <div class="row mt-4 mb-4">
         <div class="col-sm-12">
             <h5>Registered Responders</h5>
+            <small><a href="{% url 'responders' %}">View List Of Responders</a></small>
             <hr />
+            <div class="row">
+                <div class="col-sm-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>
+                                Fire Stations
+                                <span class="badge badge-primary float-right">{{ stations.fire }}</span>
+                            </h5>
+                        </div>
+                    </div> 
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>
+                                Police Stations
+                                <span class="badge badge-primary float-right">{{ stations.crime }}</span>
+                            </h5>
+                        </div>
+                    </div> 
+                </div>
+            </div>
         </div>
     </div>
 </div>

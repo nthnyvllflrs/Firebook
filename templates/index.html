@@ -1,5 +1,78 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Welcome To Reportbook</h1>
+<div id="map" class="container-fluid" style="height: 300px"><!-- Google Map Goes Here... --></div>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Reportbook</h1>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-sm-6">
+                <p>Coordinates : <span id="userLat"></span> (Lat) <span id="userLng"></span> (Lng)</p>
+                <p>Address : <span id="userAddress"></span></p>
+            </div>
+            <div class="col-sm-6">
+                <a href="" class="btn btn-lg btn-block btn-primary font-weight-bold align-self-center">REPORT AN EMERGENCY</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-sm-12">
+            <h5>Recent Reports</h5>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mt-4 mb-4">
+        <div class="col-sm-12">
+            <h5>Registered Responders</h5>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function initMap(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(
+                function(pos){
+                    document.getElementById('userLat').innerHTML = parseFloat(pos.coords.latitude).toFixed(4)
+                    document.getElementById('userLng').innerHTML = parseFloat(pos.coords.longitude).toFixed(4)
+
+                    // Display Google Map with Marker
+                    var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: pos.coords.latitude, lng: pos.coords.longitude}})
+                    var marker = new google.maps.Marker({
+                        position: {lat: pos.coords.latitude, lng: pos.coords.longitude}, 
+                        map: map,
+                    })
+
+                    // Geocoder
+                    url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
+                    geocoder_url = url + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
+                    fetch(geocoder_url).then(res => res.json()).then((out) => {
+                        document.getElementById('userAddress').innerHTML = out.results[0].formatted_address
+                    })
+                },
+                function(error){
+                    if(error.code === 1){
+                        alert("Unable to Detect Location!")
+                    }
+                },
+                {
+                    enableHighAccuracy: true,
+                    setTimeout: 5000,
+                }
+            )
+        }else{
+            alert("Cannot Detect Current Location!")
+        }
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMap" type="text/javascript"></script>
 {% endblock content %}

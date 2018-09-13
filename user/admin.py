@@ -10,4 +10,4 @@ admin.site.register(Reporter, ReportersAdmin)
 class RespondersAdmin(admin.ModelAdmin):
   list_display = ('user', 'station', 'phone_number')
 
-admin.site.register(Responder)
+admin.site.register(Responder, RespondersAdmin)

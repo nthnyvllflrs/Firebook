@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-sm-4 offset-sm-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Login</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                            <p>Your username and password didn't match. Please try again.</p>
+                        {% endif %}
+                        {% for field in form %}
+                            <div class="form-group">
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    Don't have an account? <a href="{% url 'user:reporter-signup' %}">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -18,5 +18,8 @@ urlpatterns = [
     path('change-password/', change_password, name='change-password'),
 
     path('reporter/signup/', reporter_signup, name='reporter-signup'),
+    path('reporter/<slug:username>/', reporter_detail, name='reporter-detail'),
+
     path('responder/signup/', responder_signup, name='responder-signup'),
+    path('responder/<slug:username>/', responder_detail, name='responder-detail'),
 ]

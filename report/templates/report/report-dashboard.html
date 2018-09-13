@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="timelineView">
+        <div class="container">
+            <div class="row mt-4">
+                <div class="col-sm-12">
+                        <h4>{{request.user.responder.station}} Reports</h4>
+                    <hr />
+                </div>
+                {% for report in object_list %}
+                    <div class="col-sm-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    {{ report.emergency }}
+                                    <span class="badge badge-primary float-right">{{ report.verifies.count }}</span>
+                                </h4>
+                                <hr class="my-3">
+                                <ul class="list-unstyled">
+                                    
+                                    {% if report.reporter == request.user %}
+                                        <li>Reporter : You</a></li>
+                                    {% else %}
+                                        <li>Reporter : {{ report.reporter }}</a></li>
+                                    {% endif %}
+                                        
+                                    <li>Occured : {{ report.timestamp|timesince }} ago</li>
+                                    <li>Location : {{ report.address }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

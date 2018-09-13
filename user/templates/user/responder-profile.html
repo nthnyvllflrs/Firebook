@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="row mt-4">
+                <div class="col-sm-12">
+                    <h4>Responder Details</h4>
+                    <hr />
+                </div>
+                <div class="container">
+                    <ul class="list-group">
+                        <li class="list-group-item">Username : {{ object.username }}</li>
+                        <li class="list-group-item">Email : {{ object.email }}</li>
+                        <li class="list-group-item">Phone Number : {{ object.responder.phone_number }}</li>
+                        <li class="list-group-item">Station : {{ object.responder.station }}</li>
+                        <li class="list-group-item">Address : {{ object.responder.address }}</li>
+                        
+                        {% if request.user == object %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-12 mt-2">
+                                    <a href="{% url 'user:change-password' %}" class="btn btn-primary btn-sm btn-block font-weight-bold">CHANGE PASSWORD</a>
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                            
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="row mt-4">
+                <div class="col-sm-12">
+                    <h4>Verified Reports</h4>
+                    <hr />
+                </div>
+
+                {% for report in object_list %}
+                <div class="col-sm-4 mb-4" id="column_{{report.id}}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                {{ report.emergency }}
+                                <span class="badge badge-primary float-right">{{ report.verifies.count }}</span>
+                            </h4>
+                            <hr class="my-3">
+                            <ul class="list-unstyled">
+                                <li>Reporter : {{ report.reporter }}</li>
+                                <li>Occured : {{ report.timestamp|timesince }} ago</li>
+                                <li>Location : {{ report.address }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+ </div>
+{% endblock content %}

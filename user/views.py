@@ -1,9 +1,10 @@
 from django.contrib.auth import update_session_auth_hash # Change Password
 from django.contrib.auth.forms import PasswordChangeForm # Change Password
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 
 from .forms import *
+from report.models import Report
 
 
 def reporter_signup(request):
@@ -43,3 +44,15 @@ def change_password(request):
       update_session_auth_hash(request, user)
   form = PasswordChangeForm(request.user)
   return render(request, 'user/user-change-password.html', {'form': form,})
+
+
+def reporter_detail(request, username):
+  _object = get_object_or_404(User, username=username)
+  _object_list = Report.objects.filter(reporter=_object).order_by('-timestamp')
+  return render(request, 'user/reporter-profile.html', {'object': _object, 'object_list': _object_list})
+
+
+def responder_detail(request, username):
+  _object = get_object_or_404(User, username=username)
+  _object_list = Report.objects.filter(verifies=_object).order_by('-timestamp')
+  return render(request, 'user/responder-profile.html', {'object': _object, 'object_list': _object_list})

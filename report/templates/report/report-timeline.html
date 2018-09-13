@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if account_active %}
+    
     <div id="timelineView">
         <div class="container">
             <div class="row mt-4">
@@ -29,6 +32,7 @@
                                     <li>Occured : {{ report.timestamp|timesince }} ago</li>
                                     <li>Location : {{ report.address }}</li>
                                 </ul>
+                                <a class="btn btn-outline-primary btn-sm btn-block" href="{% url 'report:report-details' report.id %}">More Details</a>
                             </div>
                         </div>
                     </div>
@@ -36,4 +40,87 @@
             </div>
         </div>
     </div>
+
+    {% if request.user.reporter %}
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            function(result){
+                var myLat = result.coords.latitude
+                var myLng = result.coords.longitude
+
+                url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
+                $.ajax({
+                    url: url + myLat + ',' + myLng + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A',
+                    success: function(data){
+                        var myAddress = data.results[0].formatted_address
+                        data = {
+                            'csrfmiddlewaretoken': getCookie('csrftoken'),
+                            'latitude': myLat,
+                            'longitude': myLng,
+                            'address': myAddress,
+                        }
+
+                        $.ajax({
+                            url: "{% url 'user:reporter-location' %}",
+                            type: 'POST',
+                            data: data,
+                            error: function(e){
+                                console.log(e)
+                            }
+                        })
+                    }
+                })
+            },
+            function(error){
+                console.log(error.code)
+            },
+            {
+                enableHighAccuracy: true,
+                setTimeout: 3000,
+            }
+        )
+    </script>
+    {% endif %}
+
+{% else %}
+
+    <!-- Modal For User's Whos Accounts Are Deactivated -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Account Is Deactivated</h5>
+            </div>
+            <div class="modal-body">
+                It looks like your account is currently deactivated. If this is a newly created account and you have followed the instructuions we sent to your email, the administrator may have not yet validated your account. If not, you must have violated the rules and regulation of the site.
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-block btn-primary" href="{% url 'user:user-logout' %}">Logout</a>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#myModal').modal('show')
+        });
+    </script>
+
+{% endif %}
+    
 {% endblock content %}

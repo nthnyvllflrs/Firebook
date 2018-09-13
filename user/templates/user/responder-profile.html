@@ -52,6 +52,7 @@
                                 <li>Occured : {{ report.timestamp|timesince }} ago</li>
                                 <li>Location : {{ report.address }}</li>
                             </ul>
+                            <a class="btn btn-outline-primary btn-sm btn-block" href="{% url 'report:report-details' report.id %}">More Details</a>
                         </div>
                     </div>
                 </div>

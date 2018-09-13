@@ -18,6 +18,7 @@ urlpatterns = [
     path('change-password/', change_password, name='change-password'),
 
     path('reporter/signup/', reporter_signup, name='reporter-signup'),
+    path('reporter/location/', reporter_location, name='reporter-location'),
     path('reporter/<slug:username>/', reporter_detail, name='reporter-detail'),
 
     path('responder/signup/', responder_signup, name='responder-signup'),

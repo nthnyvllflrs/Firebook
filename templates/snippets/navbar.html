@@ -1,6 +1,79 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand font-weight-bold" href="{% url 'landing' %}">Reportbook</a>
+    <a class="navbar-brand font-weight-bold" href="{% url 'home' %}">Reportbook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %} 
+        <!-- If User Is Authenticated -->
+            {% if request.user.is_superuser %}
+            <!-- If User Is Administrator -->
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/">Administrator</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="modal" data-target="#logoutModal" href="">Logout</a>
+                </li>
+            {% else %}
+            <!-- If User Is Not Administrator -->
+                {% if request.user.reporter %}
+                <!-- If User Is Reporter -->
+                    {% if  request.user.reporter.activated %}
+                    <!-- If User Is Activated -->
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'report:report-create' %}">Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'report:report-timeline' %}">Timeline</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'user:reporter-detail' request.user.username %}">{{ request.user }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="modal" data-target="#logoutModal" href="">Logout</a>
+                        </li>
+                    {% endif %}
+                {% elif request.user.responder %}
+                    <!-- If User Is Responder -->
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'report:report-dashboard' %}">{{ request.user.responder.station }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'report:report-timeline' %}">Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'user:responder-detail' request.user.username %}">{{ request.user }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="modal" data-target="#logoutModal" href="">Logout</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% else %}
+        <!-- If User Is Unauthenticated -->
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'user:reporter-signup' %}">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'user:user-login' %}">Login</a>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
 </nav>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Confirm Logout?</h5>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-secondary" data-dismiss="modal" href="">No</a>
+            <a class="btn btn-primary" href="{% url 'user:user-logout' %}">Yes</a>
+        </div>
+        </div>
+    </div>
+</div>

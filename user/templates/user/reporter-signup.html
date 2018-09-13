@@ -31,4 +31,27 @@
         margin: 0;
     }
 </style>
+
+{% if account_created %}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Account Created</h5>
+        </div>
+        <div class="modal-body">
+            Thank You for creating a Reportbook account. Your account was successfully created. Please open your email for additional instructions for your newly created account.
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-block btn-primary" href="{% url 'home' %}">Ok</a>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#myModal').modal('show')
+    });
+</script>
+{% endif %}
 {% endblock content %}

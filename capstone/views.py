@@ -1,9 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from report.models import Report
 from user.models import Responder
 
 def landing(request):
+
+  if request.user.is_authenticated:
+    if Responder.objects.filter(user=request.user).exists():
+      return redirect('report:report-dashboard')
+    else:
+      return redirect('report:report-timeline')
 
   object_list = Report.objects.order_by('-timestamp')[:3]
   stations = {

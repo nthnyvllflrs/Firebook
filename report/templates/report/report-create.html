@@ -1,26 +1,223 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row mt-4">
-        <div class="col-sm-4 offset-sm-4">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">Report An Emergency</h5>
-                    <hr />
-                    <form method="post">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="form-group">
-                                {{ field }}
-                                {{ field.errors }}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                    </form>
+
+{% if can_report %}
+
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-sm-4 offset-sm-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Report An Emergency</h5>
+                        <hr />
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </div>
+                            {% endfor %}
+                            <a href="" class="btn btn-sm btn-info btn-block" data-toggle="modal" data-target="#mapModal">Change Location</a>
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Modal For Map -->
+    <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-body">
+                <div id="map" class="container-fluid mb-4" style="height: 300px"><!-- Google Map Goes Here... --></div>
+                <p>Coordinates : <span id="userLat">{{ request.user.reporter.latitude }}</span> (Lat) <span id="userLng">{{ request.user.reporter.longitude }}</span> (Lng)</p>
+                <p>Formatted Address : <span id="userAddress">{{ request.user.reporter.address }}</span></p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" href="">Cancel</a>
+                <button class="btn btn-primary" data-dismiss="modal" onclick="setLocation()">Set Location</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    {% if report_created %}
+    
+        <!-- Modal For Successfull Emergency Report -->
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-body">
+                    Thank You for reporting. Your emergency was successfully reported. We already contacted the neareast responder for the emergency you have reported. Please wait for them to arrive.
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-block btn-primary" href="{% url 'report:report-timeline' %}">Ok</a>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#myModal2').modal('show')
+            });
+        </script>
+
+    {% endif %}
+
+    {% if results and not report_created %}
+
+        <!-- Modal For Recent Reports -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Recent Reports</h5>
+                </div>
+                <div class="modal-body modal-body-special">
+                    <small><p>This is/are the most recent reports. Are you about to report this emergencies? If yes, it is recommended that you verify this reports instead of reporting it.</p></small>
+
+                    {% for report in results %}
+                    <div class="card mb-1">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                {{ report.emergency }}
+                                <span class="badge badge-primary float-right">{{ report.verifies.count }}</span>
+                            </h4>
+                            <hr class="my-3">
+                            <ul class="list-unstyled">
+                                <li>Reporter : {{ report.reporter }}</li>
+                                <li>Occured : {{ report.timestamp|timesince }} ago</li>
+                                <li>Location : {{ report.address }}</li>
+                            </ul>
+                            <a class="btn btn-outline-primary btn-sm btn-block" href="{% url 'report:report-details' report.id %}">More Details</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" href="{% url 'report:report-timeline' %}">Timeline</a>
+                    <a class="btn btn-secondary" data-dismiss="modal" href="">Close</a>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#myModal').modal('show')
+            });
+        </script>
+
+    {% endif %} 
+
+    <style>
+        .errorlist{
+            list-style-type: none;
+            padding: 2px;
+            margin: 0;
+        }
+        
+        /* Important part */
+        .modal-dialog{
+            overflow-y: initial !important
+        }
+
+        .modal-body-special{
+            height: 250px;
+            overflow-y: auto;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $('#id_latitude').prop('readonly', true)
+        $('#id_longitude').prop('readonly', true)
+        $('#id_address').prop('readonly', true)
+
+        let userLat = parseFloat('{{ request.user.reporter.latitude }}')
+        let userLng = parseFloat('{{ request.user.reporter.longitude }}')
+
+        let newLat = userLat
+        let newLng = userLng
+        let newAddress = '{{ request.user.reporter.address }}'
+
+        var map, marker
+
+        function setLocation(){
+            $('#id_latitude').prop('readonly', false)
+            $('#id_longitude').prop('readonly', false)
+            $('#id_address').prop('readonly', false)
+
+            $('#id_latitude').val(newLat);
+            $('#id_longitude').val(newLng);
+            $('#id_address').val(newAddress);
+
+            $('#id_latitude').prop('readonly', true)
+            $('#id_longitude').prop('readonly', true)
+            $('#id_address').prop('readonly', true)
+        }
+
+        function initMap(){
+            userCoordinates = {lat: userLat, lng: userLng}
+            map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: userCoordinates,})
+
+            marker = new google.maps.Marker({
+                position: userCoordinates,
+                map: map,
+            })
+
+            google.maps.event.addListener(map, 'click', function(event) {
+                placeMarker(event.latLng);
+            });
+
+            function placeMarker(location) {
+                marker.setMap(null)
+                marker = new google.maps.Marker({
+                    position: location, 
+                    map: map
+                });
+                
+                document.getElementById('userAddress').innerHTML = 'Geocoding Location, Please Wait...'
+                // Geocoder
+                url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
+                geocoder_url = url + marker.getPosition().lat() + ',' + marker.getPosition().lng() + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
+                fetch(geocoder_url).then(res => res.json()).then((out) => {
+                    newAddress = out.results[0].formatted_address
+                    document.getElementById('userAddress').innerHTML = newAddress
+                })
+
+                newLat = marker.getPosition().lat()
+                document.getElementById('userLat').innerHTML = newLat
+                newLng = marker.getPosition().lng()
+                document.getElementById('userLng').innerHTML = newLng
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMap" type="text/javascript"></script>
+
+{% else %}
+
+    <!-- Modal For Notifiying User -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-body">
+                You currently cannot report for you have just recently reported an emergency. You can report after 5 minutes has pass from the time of your previous report.
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-block btn-primary" href="{% url 'home' %}">Ok</a>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#myModal').modal('show')
+        });
+    </script>
+
+{% endif %}
+
 {% endblock content %}

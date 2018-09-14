@@ -149,3 +149,8 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'CapstoneTechnopreneurship@gmail.com'
 EMAIL_HOST_PASSWORD = 'qhqx8sl!'
+
+# TWILIO Settings
+TWILIO_PHONE_NUMBER = '+12408061041'
+ACCOUNT_SID         = 'AC3e7afa348bf5b33d8242e147906749f4'
+AUTH_TOKEN          = '331659e6cf085866fb2f4fd1ac0cf5c8'

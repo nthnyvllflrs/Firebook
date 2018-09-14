@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import *
+from .utils import nearby_responder
 from user.models import Reporter
 
 @login_required
@@ -30,6 +31,9 @@ def report_create(request):
         report = form.save(commit=False)
         report.reporter = request.user
         report.save()
+
+        nearby_responder(report)
+
         report_created = True
     else:
       form = ReportForm(initial={

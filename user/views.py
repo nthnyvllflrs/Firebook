@@ -1,9 +1,13 @@
+from django.conf import settings
+
 from django.contrib.auth import update_session_auth_hash # Change Password
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required # Decorator
 from django.contrib.auth.forms import PasswordChangeForm # Change Password
+from django.core.mail import send_mail # Email
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import *
+from .constants import *
 from report.models import Report
 
 
@@ -18,6 +22,11 @@ def reporter_signup(request):
       form.save()
       user = User.objects.get(username=form.cleaned_data.get('username'))
       Reporter.objects.create(user=user)
+
+      recipients_list = (user.email,)
+      email_from = settings.EMAIL_HOST_USER
+      send_mail(EMAIL_SUBJECT, EMAIL_MESSAGE_REPORTER, email_from, recipients_list)
+
       account_created = True
   else:
     form = ReporterForm()
@@ -43,6 +52,11 @@ def responder_signup(request):
         longitude = form.cleaned_data.get('longitude'),
         address = form.cleaned_data.get('address'),
       )
+
+      recipients_list = (user.email,)
+      email_from = settings.EMAIL_HOST_USER
+      send_mail(EMAIL_SUBJECT, EMAIL_MESSAGE_RESPONDER, email_from, recipients_list)
+
       account_created = True
   else:
     form = ResponderForm()

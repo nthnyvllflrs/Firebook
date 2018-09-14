@@ -27,6 +27,13 @@ class ReporterForm(UserCreationForm):
       'last_name', 
       'email',
     )
+
+  def clean_email(self):
+    email = self.cleaned_data.get('email')
+    qs = User.objects.filter(email__iexact=email)
+    if qs.exists():
+      raise forms.ValidationError("A user with that email already exists")
+    return email
   
 
 class ResponderForm(UserCreationForm):  
@@ -48,6 +55,13 @@ class ResponderForm(UserCreationForm):
       'username', 
       'email', 
     )
+
+  def clean_email(self):
+    email = self.cleaned_data.get('email')
+    qs = User.objects.filter(email__iexact=email)
+    if qs.exists():
+      raise forms.ValidationError("A user with that email already exists")
+    return email
 
 
 class LoginForm(AuthenticationForm):

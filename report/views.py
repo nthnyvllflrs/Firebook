@@ -60,6 +60,10 @@ def report_timeline(request):
 
   if account_active:
     object_list = Report.objects.order_by('-timestamp')
+
+    if request.is_ajax():
+      return render(request, 'report/report-timeline-ajax.html', {'object_list': object_list})
+
     return render(request, 'report/report-timeline.html', {'account_active': account_active, 'object_list': object_list})
   
   return render(request,'report/report-timeline.html', {'account_active': account_active})
@@ -73,6 +77,10 @@ def report_dashboard(request):
 
   station = request.user.responder.station
   object_list = Report.objects.filter(emergency=station).order_by('-timestamp')
+
+  if request.is_ajax():
+      return render(request, 'report/report-dashboard-ajax.html', {'object_list': object_list})
+
   return render(request, 'report/report-dashboard.html', {'object_list': object_list})
 
 @login_required

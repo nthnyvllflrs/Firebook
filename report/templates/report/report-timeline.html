@@ -38,7 +38,7 @@
                                     </a>
                                     <a
                                         class="btn-verify btn btn-primary btn-sm font-weight-bold"
-                                        href="#"
+                                        href=""
                                         data-href="{% url 'report:report-verify-toggle' report.id %}"
                                         data-verifies="{{ report.verifies.count }}"
                                         data-reportID="{{ report.id }}"
@@ -118,6 +118,16 @@
         )
     </script>
     {% endif %}
+
+    <script>
+        function ajaxify(){
+            $("#timelineView").load("{% url 'report:report-timeline' %}");
+        }
+
+        setInterval(function(){
+            ajaxify()
+        }, 5000)
+    </script>
 
 {% else %}
 

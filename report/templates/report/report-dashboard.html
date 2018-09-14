@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div id="timelineView">
+    <div id="dashboardView">
         <div class="container">
             <div class="row mt-4">
                 <div class="col-sm-12">
@@ -29,7 +29,7 @@
                                     </a>
                                     <a
                                         class="btn-verify btn btn-primary btn-sm font-weight-bold"
-                                        href="#"
+                                        href=""
                                         data-href="{% url 'report:report-verify-toggle' report.id %}"
                                         data-verifies="{{ report.verifies.count }}"
                                         data-reportID="{{ report.id }}"
@@ -53,4 +53,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function ajaxify(){
+            $("#dashboardView").load("{% url 'report:report-dashboard' %}");
+        }
+
+        setInterval(function(){
+            ajaxify()
+        }, 5000)
+    </script>
 {% endblock content %}

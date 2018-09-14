@@ -15,7 +15,22 @@
                         <li class="list-group-item">Reporter : {{ object.reporter }}</li>
                         <li class="list-group-item">Timestamp : {{ object.timestamp|timesince }} ago</li>
                         <li class="list-group-item">Address : {{ object.address }}</li>
-                        <li class="list-group-item">Verifies : {{ object.verifies.count }}</li>
+                        <li class="list-group-item">Verifies : <span id="verifies_{{ object.id }}">{{ object.verifies.count }}</span></li>
+                        <li class="list-group-item">
+                            <a
+                                class="btn-verify btn btn-primary btn-sm btn-block font-weight-bold"
+                                href="#"
+                                data-href="{% url 'report:report-verify-toggle' object.id %}"
+                                data-verifies="{{ object.verifies.count }}"
+                                data-reportID="{{ object.id }}"
+                            >
+                            {% if request.user in object.verifies.all %}
+                                UNVERIFY
+                            {% else %}
+                                VERIFY
+                            {% endif %}
+                            </a>
+                        </li>
                     </ul>
                 </div>  
             </div>

@@ -39,12 +39,12 @@
                 </div>
 
                 {% for report in object_list %}
-                <div class="col-sm-4 mb-4" id="column_{{report.id}}">
+                <div class="col-sm-4 mb-4" id="Column{{report.id}}">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">
                                 {{ report.emergency }}
-                                <span class="badge badge-primary float-right">{{ report.verifies.count }}</span>
+                                <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
                             </h4>
                             <hr class="my-3">
                             <ul class="list-unstyled">
@@ -53,6 +53,39 @@
                                 <li>Location : {{ report.address }}</li>
                             </ul>
                             <a class="btn btn-outline-primary btn-sm btn-block" href="{% url 'report:report-details' report.id %}">More Details</a>
+                            <button class="btn btn-primary btn-sm btn-block font-weight-bold" data-toggle="modal" data-target="#Modal{{report.id}}">UNVERIFY</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal fade" id="Modal{{report.id}}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">UNVERIFY REPORT?</h5>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-unstyled">
+                                <li>Emergency : {{ report.emergency }}</li>
+                                <li>Report ID : {{ report.id }}</li>
+                                <li>Reporter : {{ report.reporter }}</li>
+                                <li>Occured : {{ report.timestamp|timesince }} ago</li>
+                                <li>Location : {{ report.address }}</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a
+                                class="btn-verify btn btn-primary btn-sm font-weight-bold"
+                                href="#"
+                                data-href="{% url 'report:report-verify-toggle' report.id %}"
+                                data-verifies="{{ report.verifies.count }}"
+                                data-reportID="{{ report.id }}"
+                                data-dismiss="modal"
+                            >
+                            Confirm
+                            </a>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -61,4 +94,13 @@
         </div>
     </div>
  </div>
+
+ <script>
+    $('.btn-verify').click(function(e){
+        var this_ = $(this)
+        var report_id = this_.attr('data-reportID')
+        
+        $("#Column"+report_id).attr("hidden", "hidden")
+    })
+</script>
 {% endblock content %}

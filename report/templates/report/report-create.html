@@ -85,7 +85,7 @@
                         <div class="card-body">
                             <h4 class="card-title">
                                 {{ report.emergency }}
-                                <span class="badge badge-primary float-right">{{ report.verifies.count }}</span>
+                                <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
                             </h4>
                             <hr class="my-3">
                             <ul class="list-unstyled">
@@ -94,6 +94,19 @@
                                 <li>Location : {{ report.address }}</li>
                             </ul>
                             <a class="btn btn-outline-primary btn-sm btn-block" href="{% url 'report:report-details' report.id %}">More Details</a>
+                            <a
+                                class="btn-verify btn btn-primary btn-sm btn-block font-weight-bold"
+                                href="#"
+                                data-href="{% url 'report:report-verify-toggle' report.id %}"
+                                data-verifies="{{ report.verifies.count }}"
+                                data-reportID="{{ report.id }}"
+                            >
+                            {% if request.user in report.verifies.all %}
+                                UNVERIFY
+                            {% else %}
+                                VERIFY
+                            {% endif %}
+                            </a>
                         </div>
                     </div>
                     {% endfor %}

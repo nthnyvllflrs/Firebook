@@ -13,22 +13,27 @@
                     <ul class="list-group">
                         <li class="list-group-item">Type : {{ object.emergency }}</li>
                         <li class="list-group-item">Reporter : {{ object.reporter }}</li>
-                        <li class="list-group-item">Timestamp : {{ object.timestamp|timesince }} ago</li>
+                        <li class="list-group-item">Occured : {{ object.timestamp|timesince }} ago</li>
                         <li class="list-group-item">Address : {{ object.address }}</li>
                         <li class="list-group-item">Verifies : <span id="verifies_{{ object.id }}">{{ object.verifies.count }}</span></li>
                         <li class="list-group-item">
                             <a
-                                class="btn-verify btn btn-primary btn-sm btn-block font-weight-bold"
+                                class="btn-verify btn btn-block btn-primary btn-sm font-weight-bold"
                                 href="#"
                                 data-href="{% url 'report:report-verify-toggle' object.id %}"
                                 data-verifies="{{ object.verifies.count }}"
                                 data-reportID="{{ object.id }}"
                             >
-                            {% if request.user in object.verifies.all %}
-                                UNVERIFY
-                            {% else %}
-                                VERIFY
-                            {% endif %}
+
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                &nbsp
+                                <span id="VerifyUnverify{{object.id}}">
+                                    {% if request.user in object.verifies.all %}
+                                        Unverify
+                                    {% else %}
+                                        Verify
+                                    {% endif %}
+                                </span>
                             </a>
                         </li>
                     </ul>

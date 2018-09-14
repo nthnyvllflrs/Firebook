@@ -19,7 +19,10 @@
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-sm-12 mt-2">
-                                    <a href="{% url 'user:change-password' %}" class="btn btn-primary btn-sm btn-block font-weight-bold">CHANGE PASSWORD</a>
+                                    <a href="{% url 'user:change-password' %}" class="btn btn-primary btn-sm btn-block font-weight-bold">
+                                        <i class="fa fa-key" aria-hidden="true"></i>
+                                        &nbspChange Password
+                                    </a>
                                 </div>
                             </div>
                         </li>
@@ -41,27 +44,37 @@
                         <div class="card-body">
                             <h4 class="card-title">
                                 {{ report.emergency }}
+                                <small style="font-size: 0.5em;">{{ report.timestamp|timesince }} ago</small>
                                 <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
                             </h4>
                             <hr class="my-3">
                             <ul class="list-unstyled">
-                                <li>Occured : {{ report.timestamp|timesince }} ago</li>
                                 <li>Location : {{ report.address }}</li>
                             </ul>
-                            <a class="btn btn-outline-primary btn-sm btn-block" href="{% url 'report:report-details' report.id %}">More Details</a>
-                            <a
-                                class="btn-verify btn btn-primary btn-sm btn-block font-weight-bold"
-                                href="#"
-                                data-href="{% url 'report:report-verify-toggle' report.id %}"
-                                data-verifies="{{ report.verifies.count }}"
-                                data-reportID="{{ report.id }}"
-                            >
-                            {% if request.user in report.verifies.all %}
-                                UNVERIFY
-                            {% else %}
-                                VERIFY
-                            {% endif %}
-                            </a>
+                            <div class="float-right">
+                                <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    &nbspDetails
+                                </a>
+                                <a
+                                    class="btn-verify btn btn-primary btn-sm font-weight-bold"
+                                    href="#"
+                                    data-href="{% url 'report:report-verify-toggle' report.id %}"
+                                    data-verifies="{{ report.verifies.count }}"
+                                    data-reportID="{{ report.id }}"
+                                >
+
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                &nbsp
+                                <span id="VerifyUnverify{{report.id}}">
+                                    {% if request.user in report.verifies.all %}
+                                        Unverify
+                                    {% else %}
+                                        Verify
+                                    {% endif %}
+                                </span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

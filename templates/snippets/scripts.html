@@ -14,12 +14,12 @@
                 if(data.verified){
                     newCount = verifyCount + 1
                     this_.attr("data-verifies", newCount)
-                    this_.text('UNVERIFY')
+                    $('#VerifyUnverify'+reportID).text('Unverify')
                     $('#verifies_'+reportID).text(newCount)
                 }else{
                     newCount = verifyCount - 1
                     this_.attr("data-verifies", newCount)
-                    this_.text('VERIFY')
+                    $('#VerifyUnverify'+reportID).text('Verify')
                     $('#verifies_'+reportID).text(newCount)
                 }
             },

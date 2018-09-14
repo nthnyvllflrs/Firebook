@@ -17,7 +17,7 @@ def report_create(request):
     report_created, can_report = False, False
     time_threshold = datetime.now() - timedelta(minutes=5)
     reports = Report.objects.filter(reporter=request.user, timestamp__gte=time_threshold).order_by('-timestamp')
-    results = Report.objects.filter(timestamp__gte=time_threshold).order_by('-timestamp')
+    results = Report.objects.filter(timestamp__gte=time_threshold).exclude(verifies=request.user).order_by('-timestamp')
 
     if not reports:
       can_report = True

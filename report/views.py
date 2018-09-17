@@ -35,10 +35,10 @@ def report_create(request):
         report.reporter = request.user
 
         # Reverse GeoCoding
-        # latitude = float(report.latitude)
-        # longitude = float(report.longitude)
-        # location = geocoder.google([latitude, longitude], method='reverse', key=settings.GOOGLE_MAP_API_KEY)
-        # report.address = location.address
+        latitude = float(report.latitude)
+        longitude = float(report.longitude)
+        location = geocoder.google([latitude, longitude], method='reverse', key=settings.GOOGLE_MAP_API_KEY)
+        report.address = location.address
         
         report.save()
         nearby_responder(report)

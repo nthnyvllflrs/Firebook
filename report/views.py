@@ -106,7 +106,7 @@ def report_detail(request, pk):
   is_reporter = Reporter.objects.filter(user=request.user).exists()
   _object = get_object_or_404(Report, pk=pk)
 
-  if is_reporter:
+  if is_reporter or request.user.is_superuser:
     return render(request, 'report/report-detail-reporter.html', {'object': _object})
   else:
     return render(request, 'report/report-detail-responder.html', {'object': _object})

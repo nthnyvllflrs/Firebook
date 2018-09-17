@@ -59,7 +59,11 @@ def responder_signup(request):
 
       account_created = True
   else:
-    form = ResponderForm()
+    form = ResponderForm(initial={
+        'latitude': 6.9214,
+        'longitude': 122.0790,
+        'address': 'Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines',
+      })
   return render(request, 'user/responder-signup.html', {'form': form, 'account_created': account_created})
 
 @login_required

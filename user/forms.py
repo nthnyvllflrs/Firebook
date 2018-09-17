@@ -47,7 +47,7 @@ class ResponderForm(UserCreationForm):
   station = forms.ChoiceField(choices=RESPONDER_STATION, widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Station'}))
   latitude = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Latitude'}))
   longitude = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Longitude'}))
-  address = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 1, 'class': 'form-control', 'placeholder': 'Address'}))
+  address = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'form-control', 'placeholder': 'Address'}))
 
   class Meta:
     model = User

@@ -1,5 +1,8 @@
+import geocoder
+
 from datetime import datetime, timedelta
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -30,8 +33,14 @@ def report_create(request):
       if form.is_valid():
         report = form.save(commit=False)
         report.reporter = request.user
-        report.save()
 
+        # Reverse GeoCoding
+        latitude = float(report.latitude)
+        longitude = float(report.longitude)
+        location = geocoder.google([latitude, longitude], method='reverse', key=settings.GOOGLE_MAP_API_KEY)
+        report.address = location.address
+        
+        report.save()
         nearby_responder(report)
 
         report_created = True

@@ -1,4 +1,5 @@
 capstone/settings/local.py
+capstone/settings/base.py
 db.sqlite3
 
 .py[cod]

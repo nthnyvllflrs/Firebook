@@ -8,7 +8,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import *
 from .constants import *
-from report.models import Report
+
+from report.models import Report, Notification
 
 
 def reporter_signup(request):
@@ -125,3 +126,8 @@ def reporter_location(request):
     reporter.address = address
     reporter.save()
   return redirect('report:report-timeline')
+
+@login_required
+def responder_notifications(request):
+  object_list = Notification.objects.filter(recipient=request.user).order_by('-timestamp')
+  return render(request, 'user/responder-notifications.html', {'object_list': object_list})

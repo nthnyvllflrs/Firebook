@@ -72,9 +72,6 @@
     let userLat = parseFloat('{{ request.user.responder.latitude }}')
     let userLng = parseFloat('{{ request.user.responder.longitude }}')
 
-    console.log(reportLat + ', ' + reportLng)
-    console.log(userLat + ', ' + userLng)
-
     function initMap(){
         reportCoordinates = {lat: reportLat, lng: reportLng}
         var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates,})

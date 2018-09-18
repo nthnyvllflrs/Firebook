@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from report.models import Report
+
 RESPONDER_STATION = {
     ('Crime', 'Crime'),
     ('Fire', 'Fire'),
@@ -30,4 +32,5 @@ class Responder(models.Model):
 
   def __str__(self):
     return self.user.username
+
 

@@ -28,4 +28,14 @@
             }
         })
     }) // $('.btn-verify').click()
+
+    {% if request.user.is_authenticated %}
+    function notify(){
+      $("#notificationView").load("{% url 'report:report-notification' %}");
+    }
+
+    setInterval(function(){
+        notify()
+    }, 5000)
+    {% endif %}
 </script>

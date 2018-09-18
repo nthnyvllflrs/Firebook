@@ -41,6 +41,12 @@
                     <hr />
                 </div>
 
+                {% if not object_list %}
+                <div class="col-sm-12">
+                    <h5>No Verified Reports</h5>
+                </div>
+                {% endif %}
+
                 {% for report in object_list %}
                 <div class="col-sm-4 mb-4" id="Column{{report.id}}">
                     <div class="card">

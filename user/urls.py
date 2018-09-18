@@ -22,5 +22,6 @@ urlpatterns = [
     path('reporter/<slug:username>/', reporter_detail, name='reporter-detail'),
 
     path('responder/signup/', responder_signup, name='responder-signup'),
+    path('responder/notifications/', responder_notifications, name='responder-notification'),
     path('responder/<slug:username>/', responder_detail, name='responder-detail'),
 ]

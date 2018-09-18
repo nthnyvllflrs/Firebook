@@ -1,6 +1,8 @@
 from math import sin, cos, sqrt, atan2, radians
 from django.conf import settings
 from twilio.rest import Client
+
+from .models import Notification
 from user.models import Responder
 
 
@@ -8,7 +10,7 @@ client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
 
 
 def nearby_responder(report):
-    try:
+    # try:
         responder_list = Responder.objects.filter(station=report.emergency) 
         report_responder = []
         look_up_radius = 500.0 
@@ -26,11 +28,12 @@ def nearby_responder(report):
             look_up_radius = look_up_radius + 100.0 
 
         for responder in report_responder:
-            construct_and_send_sms(report, responder)
-        
+            # construct_and_send_sms(report, responder)
+            Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
+
         return True
-    except:
-        return False
+    # except:
+    #     return False
     
 
 def construct_and_send_sms(report, responder):

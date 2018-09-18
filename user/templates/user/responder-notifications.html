@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row mt-4">
+    <div class="col-sm-6 offset-sm-3">
+      <div class="col-sm-12">
+        <h4>Notifications</h4>
+        <hr />
+        <div class="col-sm-12">
+          <ul class="list-group">
+            {% for notification in object_list %}
+            <small>
+              <li class="list-group-item mb-2">
+                <strong>
+                  {{notification.sender}}
+                </strong>
+                {{notification.report.timestamp|timesince}} ago 
+                
+                <hr>
+                <p class="mt-0">Address : {{notification.report.address}}</p>
+                <a href="{% url 'report:report-details' notification.report.id %}" style="font-size: .9em;">View Report Details</a>
+              </li>
+            </small>
+            {% endfor %}
+          </ul>
+        </div>  
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

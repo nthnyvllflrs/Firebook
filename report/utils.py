@@ -10,7 +10,7 @@ client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
 
 
 def nearby_responder(report):
-    # try:
+    try:
         responder_list = Responder.objects.filter(station=report.emergency) 
         report_responder = []
         look_up_radius = 500.0 
@@ -32,8 +32,8 @@ def nearby_responder(report):
             Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
 
         return True
-    # except:
-    #     return False
+    except:
+        return False
     
 
 def construct_and_send_sms(report, responder):

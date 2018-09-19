@@ -17,13 +17,13 @@ urlpatterns = [
     ),
     path('logout/', auth_views.LogoutView.as_view(), name='user-logout'),
     path('change-password/', change_password, name='change-password'),
+    path('notifications/', notifications, name='notification'),
 
     path('reporter/signup/', reporter_signup, name='reporter-signup'),
     path('reporter/location/', reporter_location, name='reporter-location'),
     path('reporter/<slug:username>/', reporter_detail, name='reporter-detail'),
 
     path('responder/signup/', responder_signup, name='responder-signup'),
-    path('responder/notifications/', responder_notifications, name='responder-notification'),
     path('responder/notifications/alerts/', responder_notifications_alerts, name='responder-notification-alert'),
     path('notification/<int:pk>/viewed/', NotificationViewedAPI.as_view(), name='responder-notification-viewed'),
     path('responder/<slug:username>/', responder_detail, name='responder-detail'),

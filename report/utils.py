@@ -19,33 +19,34 @@ def nearby_responder(report):
     nearby_reporters = []
 
     look_up_radius = 500.0 
+    
+    if responder_list:
+        # Loop For Nearby Responders
+        while len(report_responder) == 0:
+            for responder in responder_list:
+                distance = calculate_distance(report.latitude, report.longitude, responder.latitude, responder.longitude)
+                if distance <= look_up_radius:
+                    report_responder.append(responder) 
+            look_up_radius = look_up_radius + 100.0 
+        print("Nearby Responders", report_responder)
 
-    # Loop For Nearby Responders
-    while len(report_responder) == 0:
-        for responder in responder_list:
-            distance = calculate_distance(report.latitude, report.longitude, responder.latitude, responder.longitude)
-            if distance <= look_up_radius:
-                report_responder.append(responder) 
-        look_up_radius = look_up_radius + 100.0 
-    print("Nearby Responders", report_responder)
+        # Send Notication To Responder
+        for responder in report_responder:
+            # construct_and_send_sms(report, responder)
+            Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
 
-    # Send Notication To Responder
-    for responder in report_responder:
-        # construct_and_send_sms(report, responder)
-        Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
+    if reporter_list:
+        # Loop For Nearby Reporters
+        for reporter in reporter_list:
+            distance = calculate_distance(report.latitude, report.longitude, reporter.latitude, reporter.longitude) 
+            if distance <= 250:
+                nearby_reporters.append(reporter)
+                print(distance)
+        print("Nearby Reporters", nearby_reporters)
 
-
-    # Loop For Nearby Reporters
-    for reporter in reporter_list:
-        distance = calculate_distance(report.latitude, report.longitude, reporter.latitude, reporter.longitude) 
-        if distance <= 250:
-            nearby_reporters.append(reporter)
-            print(distance)
-    print("Nearby Reporters", nearby_reporters)
-
-    # Send Notification To Nearby Reporters
-    for reporter in nearby_reporters:
-        Notification.objects.create(sender=report.reporter, recipient=reporter.user, report=report, title='Nearby Emergency')
+        # Send Notification To Nearby Reporters
+        for reporter in nearby_reporters:
+            Notification.objects.create(sender=report.reporter, recipient=reporter.user, report=report, title='Nearby Emergency')
 
     return True
     

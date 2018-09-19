@@ -129,7 +129,7 @@ def reporter_location(request):
   return redirect('report:report-timeline')
 
 @login_required
-def responder_notifications(request):
+def notifications(request):
   Notification.objects.update(viewed=True)
   object_list = Notification.objects.filter(recipient=request.user).order_by('-timestamp')
   return render(request, 'user/responder-notifications.html', {'object_list': object_list})

@@ -28,7 +28,7 @@ def nearby_responder(report):
             look_up_radius = look_up_radius + 100.0 
 
         for responder in report_responder:
-            # construct_and_send_sms(report, responder)
+            construct_and_send_sms(report, responder)
             Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
 
         return True

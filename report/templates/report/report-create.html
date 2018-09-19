@@ -188,15 +188,16 @@
                 new google.maps.LatLng(6.84056094066974, 121.8659057354746), 
                 new google.maps.LatLng(7.4457874389567, 122.42999710690287)
             );
-            userCoordinates = {lat: userLat, lng: userLng}
 
-            // if(!strictBounds.contains(userCoordinates)){
-            //     userCoordinates = new google.maps.LatLng(6.9214, 122.0790);
-            //     $('#id_latitude').val(6.9214);
-            //     $('#id_longitude').val(122.0790);
-            //     $('#id_address').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
-            //     $('#id_info').text('We Have Reset Your Location Because Your Current Location Is Out Of Bounds.')
-            // }
+            userCoordinates = {lat: userLat, lng: userLng}
+            
+            if(!strictBounds.contains(userCoordinates)){
+                userCoordinates = new google.maps.LatLng(6.9214, 122.0790);
+                $('#id_latitude').val(6.9214);
+                $('#id_longitude').val(122.0790);
+                $('#id_address').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
+                $('#id_info').text('We Have Reset Your Location Because Your Current Location Is Out Of Bounds.')
+            }
             
             map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: userCoordinates,})
 
@@ -209,24 +210,24 @@
                 placeMarker(event.latLng);
             });
 
-            // google.maps.event.addListener(map, 'dragend', function() {
-            //     if (strictBounds.contains(map.getCenter())) return;
+            google.maps.event.addListener(map, 'dragend', function() {
+                if (strictBounds.contains(map.getCenter())) return;
 
-            //     var c = map.getCenter(),
-            //     x = c.lng(),
-            //     y = c.lat(),
-            //     maxX = strictBounds.getNorthEast().lng(),
-            //     maxY = strictBounds.getNorthEast().lat(),
-            //     minX = strictBounds.getSouthWest().lng(),
-            //     minY = strictBounds.getSouthWest().lat();
+                var c = map.getCenter(),
+                x = c.lng(),
+                y = c.lat(),
+                maxX = strictBounds.getNorthEast().lng(),
+                maxY = strictBounds.getNorthEast().lat(),
+                minX = strictBounds.getSouthWest().lng(),
+                minY = strictBounds.getSouthWest().lat();
 
-            //     if (x < minX) x = minX;
-            //     if (x > maxX) x = maxX;
-            //     if (y < minY) y = minY;
-            //     if (y > maxY) y = maxY;
+                if (x < minX) x = minX;
+                if (x > maxX) x = maxX;
+                if (y < minY) y = minY;
+                if (y > maxY) y = maxY;
 
-            //     map.setCenter(new google.maps.LatLng(y, x));
-            // });
+                map.setCenter(new google.maps.LatLng(y, x));
+            });
 
             function placeMarker(location) {
                 if(!strictBounds.contains(location)){

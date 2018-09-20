@@ -74,7 +74,7 @@ function timelineLongPolling(){
     $("#timelineView").load(urlTimeline);
 }
 
-// Notification Long Polling (Notification)
+// Notification Long Polling (Notification) ~
 function notificationLongPolling(){
 	$("#notificationView").load(urlNotificationAlerts);
 }

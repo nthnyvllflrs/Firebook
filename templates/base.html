@@ -34,7 +34,7 @@
     var urlNotification = "{% url 'user:responder-notification-alert' %}"
     {% if request.user.is_authenticated and not request.user.is_superuser %}
       notificationLongPolling()
-      setInterval(function(){ notificationLongPolling() }, 5000);
+      setInterval(function(){ notificationLongPolling() }, 6000);
     {% endif %}
   </script>
   

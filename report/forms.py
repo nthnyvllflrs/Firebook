@@ -18,7 +18,6 @@ class ReportForm(forms.ModelForm):
     ) 
 
     widgets = {
-      # 'emergency': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Emergency'}),
       'latitude': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Latitude'}),
       'longitude': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Longitude'}),
       'address': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'form-control', 'placeholder': 'Address'}),

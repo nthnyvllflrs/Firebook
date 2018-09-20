@@ -15,7 +15,7 @@ class RespondersAdmin(admin.ModelAdmin):
 admin.site.register(Responder, RespondersAdmin)
 
 
-# class NotificationsAdmin(admin.ModelAdmin):
-#   list_display = ('sender', 'recipient', 'title', 'message', 'timestamp')
+class NotificationsAdmin(admin.ModelAdmin):
+  list_display = ('sender', 'recipient', 'title', 'report', 'timestamp')
 
-# admin.site.register(Notification, NotificationsAdmin)
+admin.site.register(Notification, NotificationsAdmin)

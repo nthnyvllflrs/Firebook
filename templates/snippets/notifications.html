@@ -5,13 +5,13 @@
       <strong class="alert-heading">{{notification.title}}</strong>
       <hr>
       <small>
-        <p class="mb-0">Sender : {{notification.sender}}</p>
+        <p class="mb-0">Reporter : {{notification.sender}}</p>
         <p class="mb-0 mt-0">Address : {{notification.report.address}}</p>
         <a 
           href=""
           class="view-detail"
           data-notification="{{notification.id}}"
-          data-url="{% url 'report:report-notification-viewed' notification.id %}"
+          data-url="{% url 'user:responder-notification-viewed' notification.id %}"
           data-redirect="{% url 'report:report-details' notification.report.id %}"
         >
           View Report Details
@@ -23,7 +23,7 @@
         class="notif-close close" 
         data-dismiss="alert"
         data-notification="{{notification.id}}"
-        data-url="{% url 'report:report-notification-viewed' notification.id %}"
+        data-url="{% url 'user:responder-notification-viewed' notification.id %}"
       >
         <span aria-hidden="true">&times;</span>
       </a>

@@ -29,9 +29,9 @@
         })
     }) // $('.btn-verify').click()
 
-    {% if request.user.is_authenticated and request.user.responder %}
+    {% if request.user.is_authenticated %}
     function notify(){
-      $("#notificationView").load("{% url 'report:report-notification' %}");
+      $("#notificationView").load("{% url 'user:responder-notification-alert' %}");
     }
 
     notify()

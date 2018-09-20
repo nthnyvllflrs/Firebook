@@ -2,38 +2,52 @@ from math import sin, cos, sqrt, atan2, radians
 from django.conf import settings
 from twilio.rest import Client
 
-from .models import Notification
-from user.models import Responder
+from user.models import Notification
+from user.models import Reporter, Responder
 
 
 client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
 
 
 def nearby_responder(report):
-    try:
-        responder_list = Responder.objects.filter(station=report.emergency) 
-        report_responder = []
-        look_up_radius = 500.0 
+    responder_list = Responder.objects.filter(station=report.emergency) 
+    print("Retrieve Responders", responder_list)
+    reporter_list = Reporter.objects.exclude(user=report.reporter).filter(activated=True)
+    print("Retrieve Reporters", reporter_list)
 
-        while len(report_responder) == 0:
-            for responder in responder_list:
-                responder_lat = responder.latitude
-                responder_lng = responder.longitude
+    report_responder = []
+    nearby_reporters = []
 
-                distance = calculate_distance(report.latitude, report.longitude, responder_lat, responder_lng) 
+    look_up_radius = 500.0 
 
-                if distance <= look_up_radius:
-                    report_responder.append(responder) 
+    # Loop For Nearby Responders
+    while len(report_responder) == 0:
+        for responder in responder_list:
+            distance = calculate_distance(report.latitude, report.longitude, responder.latitude, responder.longitude)
+            if distance <= look_up_radius:
+                report_responder.append(responder) 
+        look_up_radius = look_up_radius + 100.0 
+    print("Nearby Responders", report_responder)
 
-            look_up_radius = look_up_radius + 100.0 
+    # Send Notication To Responder
+    for responder in report_responder:
+        # construct_and_send_sms(report, responder)
+        Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
 
-        for responder in report_responder:
-            construct_and_send_sms(report, responder)
-            Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
 
-        return True
-    except:
-        return False
+    # Loop For Nearby Reporters
+    for reporter in reporter_list:
+        distance = calculate_distance(report.latitude, report.longitude, reporter.latitude, reporter.longitude) 
+        if distance <= 250:
+            nearby_reporters.append(reporter)
+            print(distance)
+    print("Nearby Reporters", nearby_reporters)
+
+    # Send Notification To Nearby Reporters
+    for reporter in nearby_reporters:
+        Notification.objects.create(sender=report.reporter, recipient=reporter.user, report=report, title='Nearby Emergency')
+
+    return True
     
 
 def construct_and_send_sms(report, responder):

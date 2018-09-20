@@ -20,19 +20,3 @@ class Report(models.Model):
 
   def __str__(self):
     return ("Emergency Report #" + str(self.id))
-
-
-class Notification(models.Model):
-  sender        = models.ForeignKey(User, on_delete=models.CASCADE)
-  recipient     = models.ForeignKey(User, on_delete=models.CASCADE, related_name="is_recipient")
-
-  report        = models.ForeignKey(Report, on_delete=models.CASCADE)
-  title         = models.CharField(max_length=50)
-  message       = models.CharField(max_length=300, blank=True, null=True)
-
-  viewed        = models.BooleanField(default=False)
-
-  timestamp = models.DateTimeField(auto_now_add=True)
-
-  def __str__(self):
-    return ("Notification #" + str(self.id))

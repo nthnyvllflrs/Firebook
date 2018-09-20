@@ -110,11 +110,3 @@ def report_detail(request, pk):
     return render(request, 'report/report-detail-reporter.html', {'object': _object})
   else:
     return render(request, 'report/report-detail-responder.html', {'object': _object})
-
-
-@login_required
-def report_notification(request):
-  object_list = Notification.objects.filter(recipient=request.user, viewed=False)
-  print(object_list)
-  if request.is_ajax():
-    return render(request, 'snippets/notifications.html', {'object_list': object_list})

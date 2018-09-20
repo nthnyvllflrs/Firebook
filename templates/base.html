@@ -31,8 +31,8 @@
   <script>
     var urlLocation = "{% url 'user:reporter-location' %}"
     var urlTimeline = "{% url 'report:report-timeline' %}"
-    var urlNotification = "{% url 'user:responder-notification-alert' %}"
-    {% if request.user.is_authenticated and not request.user.is_superuser %}
+    var urlNotificationAlerts = "{% url 'user:responder-notification-alert' %}"
+    {% if request.user.is_authenticated %}
       notificationLongPolling()
       setInterval(function(){ notificationLongPolling() }, 6000);
     {% endif %}

@@ -130,7 +130,7 @@ def reporter_location(request):
 
 @login_required
 def notifications(request):
-  Notification.objects.update(viewed=True)
+  # Notification.objects.update(viewed=True)
   object_list = Notification.objects.filter(recipient=request.user).order_by('-timestamp')
   return render(request, 'user/responder-notifications.html', {'object_list': object_list})
 

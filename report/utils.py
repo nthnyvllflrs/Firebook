@@ -9,9 +9,7 @@ client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
 
 def nearby_responder(report):
     responder_list = Responder.objects.filter(station=report.emergency) 
-    print("Retrieve Responders", responder_list)
     reporter_list = Reporter.objects.exclude(user=report.reporter).filter(activated=True)
-    print("Retrieve Reporters", reporter_list)
 
     report_responder = []
     nearby_reporters = []
@@ -26,7 +24,6 @@ def nearby_responder(report):
                 if distance <= look_up_radius:
                     report_responder.append(responder) 
             look_up_radius = look_up_radius + 100.0 
-        print("Nearby Responders", report_responder)
 
         # Send Notication To Responder
         for responder in report_responder:
@@ -40,7 +37,6 @@ def nearby_responder(report):
             if distance <= 250:
                 nearby_reporters.append(reporter)
                 print(distance)
-        print("Nearby Reporters", nearby_reporters)
 
         # Send Notification To Nearby Reporters
         for reporter in nearby_reporters:

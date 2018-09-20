@@ -1,0 +1,36 @@
+/* user-change-password */
+ul{
+    list-style-type: none;
+    padding: 2px;
+    margin: 0;
+}
+
+/* reporter-signup && responder-signup */
+.errorlist{
+    list-style-type: none;
+    padding: 2px;
+    margin: 0;
+}
+
+/* report-create */
+.errorlist{
+    list-style-type: none;
+    padding: 2px;
+    margin: 0;
+}
+/* Important part */
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body-special{
+    height: 250px;
+    overflow-y: auto;
+}
+
+/* notifications */
+.myAlert-bottom{
+    position: fixed;
+    z-index: 1;
+    bottom: 0px;
+    right: 0px;
+}

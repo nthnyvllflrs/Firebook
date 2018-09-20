@@ -55,18 +55,8 @@
 </div>
 
 <script>
-    let reportLat = parseFloat('{{ object.latitude }}')
-    let reportLng = parseFloat('{{ object.longitude }}')
-
-    function initMap(){
-        reportCoordinates = {lat: reportLat, lng: reportLng}
-        var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates,})
-
-        var marker = new google.maps.Marker({
-            position: reportCoordinates,
-            map: map,
-        })
-    }
+    var reportLat = parseFloat('{{ object.latitude }}')
+    var reportLng = parseFloat('{{ object.longitude }}')
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMap" type="text/javascript"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMapReportDetailReporter" type="text/javascript"></script>
 {% endblock content %}

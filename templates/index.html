@@ -86,54 +86,5 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    function initMap(){
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(
-                function(pos){
-                    document.getElementById('userLat').innerHTML = parseFloat(pos.coords.latitude).toFixed(4)
-                    document.getElementById('userLng').innerHTML = parseFloat(pos.coords.longitude).toFixed(4)
-                    
-                    userCoordinates = {lat: pos.coords.latitude, lng: pos.coords.longitude}
-
-                    // Display Google Map with Marker
-                    var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: userCoordinates.lat, lng: userCoordinates.lng}})
-                    var marker = new google.maps.Marker({
-                        position: {lat: pos.coords.latitude, lng: pos.coords.longitude}, 
-                        map: map,
-                    })
-
-                    // Geocoder
-                    url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
-                    geocoder_url = url + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
-                    fetch(geocoder_url).then(res => res.json()).then((out) => {
-                        document.getElementById('userAddress').innerHTML = out.results[0].formatted_address
-                    })
-
-                    var strictBounds = new google.maps.LatLngBounds(
-                        new google.maps.LatLng(6.84056094066974, 121.8659057354746), 
-                        new google.maps.LatLng(7.4457874389567, 122.42999710690287)
-                    );
-
-                    if(!strictBounds.contains(userCoordinates)){
-                        document.getElementById('id_info').innerHTML = 'Your Current Location Is Out Of Bounds. This Site Can Only Notify Zamboanga City Responders.'
-                    }
-                },
-                function(error){
-                    if(error.code === 1){
-                        alert("Unable to Detect Location!")
-                    }
-                },
-                {
-                    enableHighAccuracy: true,
-                    setTimeout: 5000,
-                }
-            )
-        }else{
-            alert("Cannot Detect Current Location! Make Sure You Have Allowed Location Access")
-        }
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMap" type="text/javascript"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMapLandingPage" type="text/javascript"></script>
 {% endblock content %}

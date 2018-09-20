@@ -40,8 +40,9 @@ def report_create(request):
         location = geocoder.google([latitude, longitude], method='reverse', key=settings.GOOGLE_MAP_API_KEY)
         report.address = location.address
 
-        nearby_responder(report)
         report.save()
+
+        nearby_responder(report)
         
         report_created = True
     else:
@@ -80,21 +81,6 @@ def report_timeline(request):
     return render(request, 'report/report-timeline.html', {'account_active': account_active, 'object_list': object_list})
   
   return render(request,'report/report-timeline.html', {'account_active': account_active})
-
-@login_required
-def report_dashboard(request):
-
-  is_reporter = Reporter.objects.filter(user=request.user).exists()
-  if is_reporter:
-    return redirect('report:report-timeline')
-
-  station = request.user.responder.station
-  object_list = Report.objects.filter(emergency=station).order_by('-timestamp')
-
-  if request.is_ajax():
-      return render(request, 'report/report-dashboard-ajax.html', {'object_list': object_list})
-
-  return render(request, 'report/report-dashboard.html', {'object_list': object_list})
 
 @login_required
 def report_detail(request, pk):

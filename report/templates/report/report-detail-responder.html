@@ -66,39 +66,10 @@
 </div>
 
 <script>
-    let reportLat = parseFloat('{{ object.latitude }}')
-    let reportLng = parseFloat('{{ object.longitude }}')
-
-    let userLat = parseFloat('{{ request.user.responder.latitude }}')
-    let userLng = parseFloat('{{ request.user.responder.longitude }}')
-
-    function initMap(){
-        reportCoordinates = {lat: reportLat, lng: reportLng}
-        var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates,})
-
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-        directionsDisplay.setMap(map);
-        directionsDisplay.setPanel(document.getElementById('directionsPanel'));
-
-        directionsService.route({
-            origin: {lat: userLat, lng: userLng},
-            destination: {lat: reportLat, lng: reportLng},
-            travelMode: 'DRIVING'
-        }, 
-        function(response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-            } else {
-                window.alert('Directions request failed due to ' + status);
-            }
-        });
-
-        // var marker = new google.maps.Marker({
-        //     position: reportCoordinates,
-        //     map: map,
-        // })
-    }
+    var reportLat   = parseFloat('{{ object.latitude }}')
+    var reportLng   = parseFloat('{{ object.longitude }}')
+    var userLat     = parseFloat('{{ request.user.responder.latitude }}')
+    var userLng     = parseFloat('{{ request.user.responder.longitude }}')
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMap" type="text/javascript"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMapReportDetailResponder" type="text/javascript"></script>
 {% endblock content %}

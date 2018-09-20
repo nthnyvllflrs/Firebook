@@ -6,16 +6,42 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Reportbook</title>
 
+  {% load static %}
+  <!-- Programmer Defined Styles -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <!-- Programmer Defined Scripts -->
+  <script src="{% static 'js/map.js' %}"></script>
+  <script src="{% static 'js/functions.js' %}"></script>
+  <!-- Bootstrap 4 CSS CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <!-- JQuery CDN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-  <div id="notificationView"></div>
+
+  <div id="notificationView"><!-- Notifications Goes Here --></div>
+
   {% include 'snippets/navbar.html' %}
   {% block content %}<!-- Dynamic Content Goes Here... -->{% endblock content %}
   {% include 'snippets/scripts.html' %}
+
+  
+  <!-- Programmer Defined Scripts -->
+  <script>
+    var urlLocation = "{% url 'user:reporter-location' %}"
+    var urlTimeline = "{% url 'report:report-timeline' %}"
+    var urlNotification = "{% url 'user:responder-notification-alert' %}"
+    {% if request.user.is_authenticated and not request.user.is_superuser %}
+      setInterval(function(){ notificationLongPolling() }, 5000);
+    {% endif %}
+  </script>
+  <script src="{% static 'js/events.js' %}"></script>
+  <script src="{% static 'js/misc.js' %}"></script>
+  <!-- Popper.min.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <!-- Bootstrap 4 JS CDN -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -137,127 +137,14 @@
 
     {% endif %} 
 
-    <style>
-        .errorlist{
-            list-style-type: none;
-            padding: 2px;
-            margin: 0;
-        }
-        
-        /* Important part */
-        .modal-dialog{
-            overflow-y: initial !important
-        }
-
-        .modal-body-special{
-            height: 250px;
-            overflow-y: auto;
-        }
-    </style>
-
-    <script type="text/javascript">
-        $('#id_latitude').prop('readonly', true)
-        $('#id_longitude').prop('readonly', true)
-        $('#id_address').prop('readonly', true)
-
-        let userLat = parseFloat('{{ request.user.reporter.latitude }}')
-        let userLng = parseFloat('{{ request.user.reporter.longitude }}')
-
-        let newLat = userLat
-        let newLng = userLng
-        let newAddress = '{{ request.user.reporter.address }}'
-
-        var map, marker
-
-        function setLocation(){
-            $('#id_latitude').prop('readonly', false)
-            $('#id_longitude').prop('readonly', false)
-            $('#id_address').prop('readonly', false)
-
-            $('#id_latitude').val(newLat);
-            $('#id_longitude').val(newLng);
-            $('#id_address').val(newAddress);
-
-            $('#id_latitude').prop('readonly', true)
-            $('#id_longitude').prop('readonly', true)
-            $('#id_address').prop('readonly', true)
-        }
-
-        function initMap(){
-            var strictBounds = new google.maps.LatLngBounds(
-                new google.maps.LatLng(6.84056094066974, 121.8659057354746), 
-                new google.maps.LatLng(7.4457874389567, 122.42999710690287)
-            );
-
-            userCoordinates = {lat: userLat, lng: userLng}
-            
-            if(!strictBounds.contains(userCoordinates)){
-                userCoordinates = new google.maps.LatLng(6.9214, 122.0790);
-                $('#id_latitude').val(6.9214);
-                $('#id_longitude').val(122.0790);
-                $('#id_address').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
-                $('#id_info').text('We Have Reset Your Location Because Your Current Location Is Out Of Bounds.')
-            }
-            
-            map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: userCoordinates,})
-
-            marker = new google.maps.Marker({
-                position: userCoordinates,
-                map: map,
-            })
-
-            google.maps.event.addListener(map, 'click', function(event) {
-                placeMarker(event.latLng);
-            });
-
-            google.maps.event.addListener(map, 'dragend', function() {
-                if (strictBounds.contains(map.getCenter())) return;
-
-                var c = map.getCenter(),
-                x = c.lng(),
-                y = c.lat(),
-                maxX = strictBounds.getNorthEast().lng(),
-                maxY = strictBounds.getNorthEast().lat(),
-                minX = strictBounds.getSouthWest().lng(),
-                minY = strictBounds.getSouthWest().lat();
-
-                if (x < minX) x = minX;
-                if (x > maxX) x = maxX;
-                if (y < minY) y = minY;
-                if (y > maxY) y = maxY;
-
-                map.setCenter(new google.maps.LatLng(y, x));
-            });
-
-            function placeMarker(location) {
-                if(!strictBounds.contains(location)){
-                    alert('Location Out Of Bounds')
-                }else{
-                    marker.setMap(null)
-                    marker = new google.maps.Marker({
-                        position: location, 
-                        map: map
-                    });
-
-                    // Geocoder
-                    document.getElementById('userAddress').innerHTML = 'Geocoding Location, Please Wait...'
-                    url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
-                    geocoder_url = url + marker.getPosition().lat() + ',' + marker.getPosition().lng() + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
-                    fetch(geocoder_url).then(res => res.json()).then((out) => {
-                        newAddress = out.results[0].formatted_address
-                        document.getElementById('userAddress').innerHTML = newAddress
-                        document.getElementById('id_info').innerHTML = ''
-                    })
-
-                    newLat = marker.getPosition().lat()
-                    document.getElementById('userLat').innerHTML = newLat
-                    newLng = marker.getPosition().lng()
-                    document.getElementById('userLng').innerHTML = newLng
-                }
-            }
-        }
+    <script>
+        var userLat     = parseFloat('{{ request.user.reporter.latitude }}')
+        var userLng     = parseFloat('{{ request.user.reporter.longitude }}')
+        var newAddress  = '{{ request.user.reporter.address }}'
+        var newLat      = userLat
+        var newLng      = userLng
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMap" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A&callback=initMapReportCreate" type="text/javascript"></script>
 
 {% else %}
 

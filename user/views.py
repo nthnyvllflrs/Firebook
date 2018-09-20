@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .constants import *
 
-from .models import Notification
+from .models import Notification, Reporter, Responder
 from report.models import Report
 
 

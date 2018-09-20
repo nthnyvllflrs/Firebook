@@ -2,9 +2,7 @@ from math import sin, cos, sqrt, atan2, radians
 from django.conf import settings
 from twilio.rest import Client
 
-from user.models import Notification
-from user.models import Reporter, Responder
-
+from user.models import Responder, Reporter, Notification
 
 client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
 

@@ -39,10 +39,10 @@ def report_create(request):
         longitude = float(report.longitude)
         location = geocoder.google([latitude, longitude], method='reverse', key=settings.GOOGLE_MAP_API_KEY)
         report.address = location.address
-        
-        report.save()
-        nearby_responder(report)
 
+        nearby_responder(report)
+        report.save()
+        
         report_created = True
     else:
       form = ReportForm(initial={

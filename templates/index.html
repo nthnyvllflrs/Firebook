@@ -12,6 +12,7 @@
             <div class="col-sm-6">
                 <p>Coordinates : <span id="userLat"></span> (Lat) <span id="userLng"></span> (Lng)</p>
                 <p>Address : <span id="userAddress"></span></p>
+                <p id="id_info"></p>
             </div>
             <div class="col-sm-6">
                 <a href="{% url 'report:report-create' %}" class="btn btn-lg btn-block btn-primary font-weight-bold align-self-center">REPORT AN EMERGENCY</a>
@@ -93,9 +94,11 @@
                 function(pos){
                     document.getElementById('userLat').innerHTML = parseFloat(pos.coords.latitude).toFixed(4)
                     document.getElementById('userLng').innerHTML = parseFloat(pos.coords.longitude).toFixed(4)
+                    
+                    userCoordinates = {lat: pos.coords.latitude, lng: pos.coords.longitude}
 
                     // Display Google Map with Marker
-                    var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: pos.coords.latitude, lng: pos.coords.longitude}})
+                    var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: user.lat, lng: user.lng}})
                     var marker = new google.maps.Marker({
                         position: {lat: pos.coords.latitude, lng: pos.coords.longitude}, 
                         map: map,
@@ -107,6 +110,16 @@
                     fetch(geocoder_url).then(res => res.json()).then((out) => {
                         document.getElementById('userAddress').innerHTML = out.results[0].formatted_address
                     })
+
+                    var strictBounds = new google.maps.LatLngBounds(
+                        new google.maps.LatLng(6.84056094066974, 121.8659057354746), 
+                        new google.maps.LatLng(7.4457874389567, 122.42999710690287)
+                    );
+
+                    if(!strictBounds.contains(userCoordinates)){
+                        userCoordinates = new google.maps.LatLng(6.9214, 122.0790);
+                        document.getElementById('id_info').innerHTML = 'Your Current Location Is Out Of Bounds. This Site Can Only Notify Zamboanga City Responders.'
+                    }
                 },
                 function(error){
                     if(error.code === 1){
@@ -119,7 +132,7 @@
                 }
             )
         }else{
-            alert("Cannot Detect Current Location!")
+            alert("Cannot Detect Current Location! Make Sure You Have Allowed Location Access")
         }
     }
 </script>

@@ -29,7 +29,7 @@
         })
     }) // $('.btn-verify').click()
 
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated and request.user.responder %}
     function notify(){
       $("#notificationView").load("{% url 'report:report-notification' %}");
     }

@@ -12,7 +12,7 @@
             <div class="col-sm-6">
                 <p>Coordinates : <span id="userLat"></span> (Lat) <span id="userLng"></span> (Lng)</p>
                 <p>Address : <span id="userAddress"></span></p>
-                <p id="id_info"></p>
+                <small><p id="id_info"></p></small>
             </div>
             <div class="col-sm-6">
                 <a href="{% url 'report:report-create' %}" class="btn btn-lg btn-block btn-primary font-weight-bold align-self-center">REPORT AN EMERGENCY</a>
@@ -98,7 +98,7 @@
                     userCoordinates = {lat: pos.coords.latitude, lng: pos.coords.longitude}
 
                     // Display Google Map with Marker
-                    var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: user.lat, lng: user.lng}})
+                    var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: userCoordinates.lat, lng: userCoordinates.lng}})
                     var marker = new google.maps.Marker({
                         position: {lat: pos.coords.latitude, lng: pos.coords.longitude}, 
                         map: map,
@@ -117,7 +117,6 @@
                     );
 
                     if(!strictBounds.contains(userCoordinates)){
-                        userCoordinates = new google.maps.LatLng(6.9214, 122.0790);
                         document.getElementById('id_info').innerHTML = 'Your Current Location Is Out Of Bounds. This Site Can Only Notify Zamboanga City Responders.'
                     }
                 },

@@ -18,6 +18,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
   <!-- Programmer Defined Scripts -->
   <script src="{% static 'js/map.js' %}"></script>
+  <script src="{% static 'js/functions.js' %}"></script>
   <script>
     var urlLocation = "{% url 'user:reporter-location' %}"
     var urlTimeline = "{% url 'report:report-timeline' %}"
@@ -32,7 +33,6 @@
 
   {% load static %}
   <!-- Programmer Defined Scripts -->
-  <script src="{% static 'js/functions.js' %}"></script>
   <script src="{% static 'js/misc.js' %}"></script>
   <script src="{% static 'js/events.js' %}"></script>
   <script>

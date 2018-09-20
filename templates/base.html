@@ -18,7 +18,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
   <!-- Programmer Defined Scripts -->
   <script src="{% static 'js/map.js' %}"></script>
-  <script src="{% static 'js/functions.js' %}"></script>
+  
 </head>
 <body>
 
@@ -26,6 +26,15 @@
 
   {% include 'snippets/navbar.html' %}
   {% block content %}<!-- Dynamic Content Goes Here... -->{% endblock content %}
+
+  {% load static %}
+  <script src="{% static 'js/functions.js' %}"></script>
+  <script src="{% static 'js/misc.js' %}"></script>
+  <script src="{% static 'js/events.js' %}"></script>
+  <!-- Popper.min.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <!-- Bootstrap 4 JS CDN -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
   <!-- Programmer Defined Scripts -->
   <script>
@@ -37,13 +46,5 @@
       setInterval(function(){ notificationLongPolling() }, 6000);
     {% endif %}
   </script>
-  
-  {% load static %}
-  <script src="{% static 'js/misc.js' %}"></script>
-  <script src="{% static 'js/events.js' %}"></script>
-  <!-- Popper.min.js CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <!-- Bootstrap 4 JS CDN -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

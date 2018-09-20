@@ -1,37 +1,31 @@
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import authentication, permissions
 
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
 from .models import Report
-# from .models import Notification
 
-class ReportVerfiyAPIToggle(APIView):
+@api_view(['GET'])
+def report_verify_toggle(request, pk):
+  obj = get_object_or_404(Report, id=pk)
+  user = request.user
 
-  authentication_classes = (authentication.SessionAuthentication,)
-  permission_classes = (permissions.IsAuthenticated,)
+  updated = False
+  verified = False
 
-  def get(self, request, pk=None, format=None):
-    obj = get_object_or_404(Report, id=pk)
-    user = self.request.user
+  if user.is_authenticated:
+    if user in obj.verifies.all():
+      verified = False
+      obj.verifies.remove(user)
+    else:
+      verified = True
+      obj.verifies.add(user)
+      updated = True
 
-    updated = False
-    verified = False
+  data = {
+    'updated': updated,
+    'verified': verified
+  }
 
-    if user.is_authenticated:
-      if user in obj.verifies.all():
-        verified = False
-        obj.verifies.remove(user)
-      else:
-        verified = True
-        obj.verifies.add(user)
-        updated = True
-
-    data = {
-      'updated': updated,
-      'verified': verified
-    }
-
-    return Response(data)
+  return Response(data)

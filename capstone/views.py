@@ -7,7 +7,7 @@ def landing(request):
 
   if request.user.is_authenticated:
     if Responder.objects.filter(user=request.user).exists():
-      return redirect('user:notification')
+      return redirect('report:report-timeline')
     else:
       return redirect('report:report-timeline')
 

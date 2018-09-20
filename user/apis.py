@@ -1,3 +1,4 @@
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
@@ -22,3 +23,16 @@ class NotificationViewedAPI(APIView):
     }
 
     return Response(data)
+
+
+@api_view(['GET'])
+def notification_viewed(request, pk):
+  obj = get_object_or_404(Notification, id=pk)
+  obj.viewed = True
+  obj.save()
+
+  data = {
+    'viewed': True,
+  }
+
+  return Response(data)

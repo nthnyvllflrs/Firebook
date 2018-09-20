@@ -10,5 +10,5 @@ urlpatterns = [
     path('timeline/', report_timeline, name='report-timeline'),
     
     path('<int:pk>/', report_detail, name='report-details'),
-    path('<int:pk>/verify/', ReportVerfiyAPIToggle.as_view(), name='report-verify-toggle'),
+    path('<int:pk>/verify/', report_verify_toggle, name='report-verify-toggle'),
 ]

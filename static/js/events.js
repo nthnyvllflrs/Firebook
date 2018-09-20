@@ -7,6 +7,7 @@ $('.btn-verify').click(function(e){
 
 // Notification view details event function (Notification)
 $('.view-detail').click(function(e){
+    console.log("DEtail")
 	e.preventDefault()
 	var this_ = $(this)
 	var notification_id = this_.attr('data-notification')
@@ -28,6 +29,7 @@ $('.view-detail').click(function(e){
 
 // Notification close event function (Notification)
 $('.notif-close').click(function(e){
+    console.log("CLose")
 	e.preventDefault()
 	var this_ = $(this)
 	var notification_id  = this_.attr('data-notification')

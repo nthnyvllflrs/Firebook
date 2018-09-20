@@ -34,6 +34,8 @@
       $("#notificationView").load("{% url 'report:report-notification' %}");
     }
 
+    notify()
+
     setInterval(function(){
         notify()
     }, 5000)

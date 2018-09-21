@@ -4,6 +4,7 @@ from django.contrib.auth import update_session_auth_hash # Change Password
 from django.contrib.auth.decorators import login_required # Decorator
 from django.contrib.auth.forms import PasswordChangeForm # Change Password
 from django.core.mail import send_mail # Email
+from django.db.models import Count, Sum
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import *
@@ -94,8 +95,9 @@ def reporter_detail(request, username):
     return redirect('report:report-timeline')
 
   _object = get_object_or_404(User, username=username)
+  _verifies = Report.objects.filter(reporter=_object).annotate(Count("verifies")).aggregate(Sum("verifies__count"))
   _object_list = Report.objects.filter(reporter=_object).order_by('-timestamp')
-  return render(request, 'user/reporter-profile.html', {'object': _object, 'object_list': _object_list})
+  return render(request, 'user/reporter-profile.html', {'object': _object, 'verifies': _verifies , 'object_list': _object_list})
 
 @login_required
 def responder_detail(request, username):

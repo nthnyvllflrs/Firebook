@@ -22,7 +22,12 @@ def reporter_signup(request):
     if form.is_valid():
       form.save()
       user = User.objects.get(username=form.cleaned_data.get('username'))
-      Reporter.objects.create(user=user)
+      Reporter.objects.create(
+        user=user,
+        latitude=6.9214,
+        longitude=122.0790,
+        address='Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines',
+      )
 
       send_reporter_welcome_email(user)
 

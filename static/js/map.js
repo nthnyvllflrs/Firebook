@@ -99,6 +99,10 @@ function initMapReportCreate(){
         $('#id_longitude').val(122.0790);
         $('#id_address').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
         $('#id_info').text('We Have Reset Your Location Because Your Current Location Is Out Of Bounds.')
+        
+        $('#userLat').val(6.9214);
+        $('#userLng').val(122.0790);
+        $('#userAddress').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
     }
     
     map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: userCoordinates,})

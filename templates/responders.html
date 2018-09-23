@@ -7,6 +7,11 @@
             <h4>Fire Stations</h4>
             <hr />
         </div>
+        {% if not context.fire_stations %}
+        <div class="col-sm-12">
+            <p class="lead">No Fire Stations Are Registered</p>
+        </div>
+        {% endif %}
         <div class="col-sm-12">
             <div class="row">
                 {% for fire_station in context.fire_stations %}
@@ -34,6 +39,11 @@
             <h4>Police Stations</h4>
             <hr />
         </div>
+        {% if not context.police_station %}
+        <div class="col-sm-12">
+            <p class="lead">No Police Stations Are Registered</p>
+        </div>
+        {% endif %}
         <div class="col-sm-12">
             <div class="row">
                 {% for police_station in context.police_stations %}

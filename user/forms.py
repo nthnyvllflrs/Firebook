@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -5,8 +7,8 @@ from django.contrib.auth.models import User
 from .models import Reporter, Responder
 
 RESPONDER_STATION = {
-    ('Crime', 'Crime'),
-    ('Fire', 'Fire'),
+    # ('Crime', 'Crime'),
+    ('Fire', 'Fire Station'),
 }
 
 class ReporterForm(UserCreationForm):
@@ -62,6 +64,12 @@ class ResponderForm(UserCreationForm):
     if qs.exists():
       raise forms.ValidationError("A user with that email already exists")
     return email
+
+  def clean_phone_number(self):
+    phone_number = self.cleaned_data.get('phone_number')
+    if not re.match(r"(\+?\d{2}?\s?\d{3}\s?\d{3}\s?\d{4})|([0]\d{3}\s?\d{3}\s?\d{4})", phone_number):
+      raise forms.ValidationError("Invalid Phone Number")
+    return phone_number
 
   def clean_latitude(self):
     latitude = self.cleaned_data.get('latitude')

@@ -11,8 +11,7 @@ def report_verify_toggle(request, pk):
   obj = get_object_or_404(Report, id=pk)
   user = request.user
 
-  updated = False
-  verified = False
+  updated, verified = False, False 
 
   if user.is_authenticated:
     if user in obj.verifies.all():

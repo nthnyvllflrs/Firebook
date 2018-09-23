@@ -17,7 +17,8 @@ def report_create(request):
   if is_reporter and not request.user.reporter.activated:
     return redirect('report:report-timeline')
 
-  if is_reporter:
+  print("Hello !")
+  if is_reporter or request.user.is_superuser:
     report_created, can_report = False, False
     time_threshold = datetime.now() - timedelta(minutes=5)
     reports = Report.objects.filter(reporter=request.user, timestamp__gte=time_threshold).order_by('-timestamp')
@@ -27,6 +28,9 @@ def report_create(request):
       can_report = True
     else:
       can_report = False
+
+    if request.user.is_superuser:
+      can_report = True
 
     if request.method == 'POST':
       form = ReportForm(request.POST)
@@ -46,11 +50,18 @@ def report_create(request):
         
         report_created = True
     else:
-      form = ReportForm(initial={
-        'latitude': request.user.reporter.latitude,
-        'longitude': request.user.reporter.longitude,
-        'address': request.user.reporter.address,
-      })
+      if request.user.is_superuser:
+        form = ReportForm(initial={
+          'latitude': 6.9214,
+          'longitude': 122.0790,
+          'address': 'Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines',
+        })
+      else:
+        form = ReportForm(initial={
+          'latitude': request.user.reporter.latitude,
+          'longitude': request.user.reporter.longitude,
+          'address': request.user.reporter.address,
+        })
 
     context = {
       'form': form, 

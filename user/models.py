@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from report.models import Report
 
 RESPONDER_STATION = {
-    ('Crime', 'Crime'),
-    ('Fire', 'Fire'),
+    # ('Crime', 'Crime'),
+    ('Fire', 'Fire Station'),
 }
 
 class Reporter(models.Model):

@@ -1,14 +1,15 @@
 from django import forms
 
+# Import all models inside report.models
 from .models import *
 
+# Constant
 EMERGENCY_CHOICES = {
-    ('Crime', 'Crime'),
+    # ('Crime', 'Crime'),
     ('Fire', 'Fire'),
 }
 
 class ReportForm(forms.ModelForm):
-
   emergency = forms.ChoiceField(choices=EMERGENCY_CHOICES, widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Emergency'}))
 
   class Meta:

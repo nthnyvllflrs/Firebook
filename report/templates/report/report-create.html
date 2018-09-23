@@ -21,7 +21,9 @@
                             {% endfor %}
                             <a href="" class="btn btn-sm btn-info btn-block" data-toggle="modal" data-target="#mapModal">Change Location</a>
                             <button type="submit" class="btn btn-primary btn-block" id="id_reportsubmit">Submit</button>
+                            {% if not request.user.is_superuser %}
                             <small><span id="id_info"></span></small>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

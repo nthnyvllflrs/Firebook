@@ -1,20 +1,18 @@
-from django.conf import settings
-
 from django.contrib.auth import update_session_auth_hash # Change Password
 from django.contrib.auth.decorators import login_required # Decorator
 from django.contrib.auth.forms import PasswordChangeForm # Change Password
-from django.core.mail import send_mail # Email
 from django.db.models import Count, Sum
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import *
-from .constants import *
+from .utils import *
 
 from .models import Notification, Reporter, Responder
 from report.models import Report
 
 
 def reporter_signup(request):
+
   if request.user.is_authenticated:
     return redirect('report:report-timeline')
 
@@ -26,9 +24,7 @@ def reporter_signup(request):
       user = User.objects.get(username=form.cleaned_data.get('username'))
       Reporter.objects.create(user=user)
 
-      recipients_list = (user.email,)
-      email_from = settings.EMAIL_HOST_USER
-      send_mail(EMAIL_SUBJECT, EMAIL_MESSAGE_REPORTER, email_from, recipients_list)
+      send_reporter_welcome_email(user)
 
       account_created = True
   else:
@@ -56,9 +52,7 @@ def responder_signup(request):
         address = form.cleaned_data.get('address'),
       )
 
-      recipients_list = (user.email,)
-      email_from = settings.EMAIL_HOST_USER
-      send_mail(EMAIL_SUBJECT, EMAIL_MESSAGE_RESPONDER, email_from, recipients_list)
+      send_responder_welcome_email(user)
 
       account_created = True
   else:

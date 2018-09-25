@@ -117,9 +117,9 @@ def reporter_location(request):
     return redirect('report:report-timeline')
 
   if request.method == 'POST':
-    latitude = request.POST['latitude']
-    longitude = request.POST['longitude']
-    address = request.POST['address']
+    latitude = request.POST.get('latitude', None)
+    longitude = request.POST.get('longitude', None)
+    address = request.POST.get('address', None)
 
     user = User.objects.get(username=request.user)
     reporter = Reporter.objects.get(user=user)

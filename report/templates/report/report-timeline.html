@@ -36,9 +36,8 @@
                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                                         &nbspDetails
                                     </a>
-                                    <a
+                                    <button
                                         class="btn-verify btn btn-primary btn-sm font-weight-bold"
-                                        href=""
                                         data-href="{% url 'report:report-verify-toggle' report.id %}"
                                         data-verifies="{{ report.verifies.count }}"
                                         data-reportID="{{ report.id }}"
@@ -53,7 +52,7 @@
                                             Verify
                                         {% endif %}
                                     </span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +66,8 @@
         {% if request.user.reporter %}
             calculateLocation()
         {% endif %}
-        setInterval(function(){ timelineLongPolling() }, 7500);
+        // setInterval(function(){ timelineLongPolling() }, 10000);
+        timelineLongPolling()
     </script>
 {% else %}
 

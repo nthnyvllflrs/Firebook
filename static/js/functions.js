@@ -22,27 +22,24 @@ function calculateLocation(){
 	        var myLng = result.coords.longitude
 
 	        url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
-	        $.ajax({
-	            url: url + myLat + ',' + myLng + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A',
-	            success: function(data){
-	                var myAddress = data.results[0].formatted_address
-	                data = {
-	                    'csrfmiddlewaretoken': getCookie('csrftoken'),
-	                    'latitude': myLat,
-	                    'longitude': myLng,
-	                    'address': myAddress,
-	                }
+	        url = url + myLat + ',' + myLng + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
+	        fetch(url).then(res => res.json()).then((out) => {
+                var data = {
+                	'csrfmiddlewaretoken': getCookie('csrftoken'),
+                    'latitude': myLat,
+                    'longitude': myLng,
+                    'address': out.results[0].formatted_address,
+                }
 
-	                $.ajax({
-	                    url: urlLocation,
-	                    type: 'POST',
-	                    data: data,
-	                    error: function(e){
-	                        console.log(e)
-	                    }
-	                })
-	            }
-	        })
+                $.ajax({
+                    url: urlLocation,
+                    type: 'POST',
+                    data: data,
+                    error: function(e){
+                        console.log(e.message)
+                    }
+                })
+		    })
 	    },
 	    function(error){
 	        console.log(error.code)
@@ -69,12 +66,25 @@ function setLocation(){
     $('#id_address').prop('readonly', true)
 }
 
+
 // Timeline Long Polling Function (Timeline)
 function timelineLongPolling(){
-    $("#timelineView").load(urlTimeline);
+	(function timelinePoll(){
+        setTimeout(function(){
+            $("#timelineView").load(urlTimeline);
+            timelinePoll();
+        }, 8000);
+    })();
 }
 
 // Notification Long Polling (Notification) ~
 function notificationLongPolling(){
-	$("#notificationView").load(urlNotification);
+	// $("#notificationView").load(urlNotification);
+	(function notificationPoll(){
+        setTimeout(function(){
+            $("#notificationView").load(urlNotification);
+            notificationPoll();
+        }, 5000);
+    })();
 }
+

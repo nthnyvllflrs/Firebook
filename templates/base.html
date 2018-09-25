@@ -38,7 +38,7 @@
   <script>
     {% if request.user.is_authenticated %}
       notificationLongPolling()
-      setInterval(function(){ notificationLongPolling() }, 6000);
+      // setInterval(function(){ notificationLongPolling() }, 5000);
     {% endif %}
   </script>
   <!-- Popper.min.js CDN -->

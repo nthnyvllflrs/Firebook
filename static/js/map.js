@@ -70,8 +70,8 @@ function initMapForResponderSignUp(){
 
         $('#id_address').val('Geocoding Location, Please Wait...');
         url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
-        geocoder_url = url + marker.getPosition().lat() + ',' + marker.getPosition().lng() + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
-        fetch(geocoder_url).then(res => res.json()).then((out) => {
+        url = url + marker.getPosition().lat() + ',' + marker.getPosition().lng() + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
+        fetch(url).then(res => res.json()).then((out) => {
             newAddress = out.results[0].formatted_address
             $('#id_address').val(newAddress);
         })

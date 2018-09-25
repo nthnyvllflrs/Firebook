@@ -107,3 +107,10 @@ def report_detail(request, pk):
     return render(request, 'report/report-detail-reporter.html', {'object': _object})
   else:
     return render(request, 'report/report-detail-responder.html', {'object': _object})
+
+
+def incoming_messages(request):
+  object_list = {'message': 'No Incoming Messages'}
+  if request.method == 'POST':
+    object_list = request.POST
+  return render(request, 'report/incoming-sms.html', {'object_list': object_list})

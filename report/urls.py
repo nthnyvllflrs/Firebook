@@ -8,6 +8,7 @@ app_name = 'report'
 urlpatterns = [
     path('create/', report_create, name='report-create'),
     path('timeline/', report_timeline, name='report-timeline'),
+    path('messages/', incoming_messages, name='incoming-messages'),
     
     path('<int:pk>/', report_detail, name='report-details'),
     path('<int:pk>/verify/', report_verify_toggle, name='report-verify-toggle'),

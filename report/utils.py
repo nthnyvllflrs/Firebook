@@ -27,7 +27,7 @@ def nearby_responder(report):
 
         # Send Notication To Responder
         for responder in report_responder:
-            # construct_and_send_sms(report, responder) // SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
+            construct_and_send_sms(report, responder) # SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
             Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
 
     if reporter_list:
@@ -51,7 +51,7 @@ def construct_and_send_sms(report, responder):
     client.messages.create(
         to      = responder.phone_number,
         from_   = settings.TWILIO_PHONE_NUMBER,
-        body    = 'Responder : %s \nReport # : %s \nReporter : %s \nAddress : %s' % (responder.user.username, report.id, report.reporter, report.address)
+        body    = 'Nearby Report Notification\nResponder : %s \nReport # : %s \nReporter : %s \nAddress : %s' % (responder.user.username, report.id, report.reporter, report.address)
     ) # Send SMS Notification to nearby responder
 
 

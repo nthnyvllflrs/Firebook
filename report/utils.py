@@ -33,7 +33,7 @@ def nearby_responder(report):
     if reporter_list:
         # Loop For Nearby Reporters
         for reporter in reporter_list:
-            distance = calculate_distance(report.latitude, report.longitude, reporter.latitude, reporter.longitude) 
+            # distance = calculate_distance(report.latitude, report.longitude, reporter.latitude, reporter.longitude) 
             if distance <= 1000:
                 nearby_reporters.append(reporter)
                 print(distance)

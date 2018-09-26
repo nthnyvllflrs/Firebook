@@ -34,37 +34,5 @@
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-sm-12">
-            <h4>Police Stations</h4>
-            <hr />
-        </div>
-        {% if not context.police_station %}
-        <div class="col-sm-12">
-            <p class="lead">No Police Stations Are Registered</p>
-        </div>
-        {% endif %}
-        <div class="col-sm-12">
-            <div class="row">
-                {% for police_station in context.police_stations %}
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    {{ police_station.user }}
-                                </h5>
-                                <hr class="my-3">
-                                <ul class="list-unstyled">
-                                    <li>Phone Number : {{ police_station.phone_number }}</li>
-                                    <li>Email : {{ police_station.user.email }}</li>
-                                    <li>Address : {{ police_station.address }}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock content %}

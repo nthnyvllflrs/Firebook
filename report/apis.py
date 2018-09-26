@@ -28,20 +28,3 @@ def report_verify_toggle(request, pk):
   }
 
   return Response(data)
-
-from django.conf import settings
-from twilio.rest import Client
-client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
-
-@api_view(['GET', 'POST'])
-def incoming_sms(request):
-  if request.method == 'POST':
-    data = request.POST
-    client.messages.create(
-      to      = responder.phone_number,
-      from_   = settings.TWILIO_PHONE_NUMBER,
-      body    = data
-    )
-  else:
-    data = {'message': 'This Is A Message'}
-  return Response(data)

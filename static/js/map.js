@@ -9,7 +9,7 @@ function initMapLandingPage(){
                 userCoordinates = {lat: pos.coords.latitude, lng: pos.coords.longitude}
 
                 // Display Google Map with Marker
-                var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: userCoordinates.lat, lng: userCoordinates.lng}})
+                var map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: userCoordinates.lat, lng: userCoordinates.lng}, disableDefaultUI: true})
                 var marker = new google.maps.Marker({
                     position: {lat: pos.coords.latitude, lng: pos.coords.longitude}, 
                     map: map,
@@ -28,7 +28,14 @@ function initMapLandingPage(){
                 );
 
                 if(!strictBounds.contains(userCoordinates)){
-                    $('#id_info').text('Your Current Location Is Out Of Bounds. This Site Can Only Notify Zamboanga City Responders.')
+                    $('#id_info').text('Your Current Location Is Out Of Bounds. This Site Can Only Notify Resigistered Zamboanga City Responders.')
+
+                    marker.setMap(null)
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(6.9214, 122.0790), 
+                        map: map
+                    });
+                    map.setCenter(new google.maps.LatLng(6.9214, 122.0790))
                 }
             },
             function(error){
@@ -50,7 +57,7 @@ function initMapLandingPage(){
 // responder-signup
 var map, marker;
 function initMapForResponderSignUp(){
-    map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: 6.9214, lng: 122.0790},})
+    map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: {lat: 6.9214, lng: 122.0790},disableDefaultUI: true})
 
     marker = new google.maps.Marker({
         position: {lat: 6.9214, lng: 122.0790},
@@ -105,7 +112,7 @@ function initMapReportCreate(){
         $('#userAddress').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
     }
     
-    map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: userCoordinates,})
+    map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: userCoordinates, disableDefaultUI: true})
 
     marker = new google.maps.Marker({
         position: userCoordinates,
@@ -166,7 +173,7 @@ function initMapReportCreate(){
 // report-detail-reporter
 function initMapReportDetailReporter(){
     reportCoordinates = {lat: reportLat, lng: reportLng}
-    var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates,})
+    var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates, disableDefaultUI: true})
 
     var marker = new google.maps.Marker({
         position: reportCoordinates,
@@ -177,7 +184,7 @@ function initMapReportDetailReporter(){
 // report-detail-responder
 function initMapReportDetailResponder(){
     reportCoordinates = {lat: reportLat, lng: reportLng}
-    var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates,})
+    var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates, disableDefaultUI: true})
 
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;

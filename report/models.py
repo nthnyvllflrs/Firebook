@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+# Note : Do Migrations After Removing Comment
 EMERGENCY_CHOICES = {
     # ('Crime', 'Crime'),
     ('Fire', 'Fire'),

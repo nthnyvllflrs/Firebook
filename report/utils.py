@@ -18,7 +18,7 @@ def nearby_responder(report):
     
     if responder_list:
         # Loop For Nearby Responders
-        while len(report_responder) == 0:
+        while len(report_responder) == 0 and look_up_radius <= 70000:
             for responder in responder_list:
                 distance = calculate_distance(report.latitude, report.longitude, responder.latitude, responder.longitude)
                 if distance <= look_up_radius:
@@ -27,7 +27,7 @@ def nearby_responder(report):
 
         # Send Notication To Responder
         for responder in report_responder:
-            # construct_and_send_sms(report, responder)
+            # construct_and_send_sms(report, responder) // SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
             Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
 
     if reporter_list:

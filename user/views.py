@@ -109,26 +109,6 @@ def responder_detail(request, username):
   _object_list = Report.objects.filter(verifies=_object).order_by('-timestamp')
   return render(request, 'user/responder-profile.html', {'object': _object, 'object_list': _object_list})
 
-# @login_required
-# def reporter_location(request):
-
-#   is_reporter = Reporter.objects.filter(user=request.user).exists()
-#   if is_reporter and not request.user.reporter.activated:
-#     return redirect('report:report-timeline')
-
-#   if request.method == 'POST':
-#     latitude = request.POST.get('latitude', None)
-#     longitude = request.POST.get('longitude', None)
-#     address = request.POST.get('address', None)
-
-#     user = User.objects.get(username=request.user)
-#     reporter = Reporter.objects.get(user=user)
-#     reporter.latitude = latitude
-#     reporter.longitude = longitude
-#     reporter.address = address
-#     reporter.save()
-#   return redirect('report:report-timeline')
-
 @login_required
 def notifications(request):
   Notification.objects.filter(recipient=request.user).update(viewed=True)

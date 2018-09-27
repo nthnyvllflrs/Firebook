@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('responder/signup/', responder_signup, name='responder-signup'),
     path('responder/notifications/alerts/', responder_notifications_alerts, name='responder-notification-alert'),
-    # path('notification/<int:pk>/viewed/', NotificationViewedAPI.as_view(), name='responder-notification-viewed'),
+    
     path('notification/<int:pk>/viewed/', notification_viewed, name='responder-notification-viewed'),
     path('responder/<slug:username>/', responder_detail, name='responder-detail'),
 ]

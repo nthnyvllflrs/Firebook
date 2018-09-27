@@ -24,46 +24,29 @@ function calculateLocation(){
 	        url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
 	        url = url + myLat + ',' + myLng + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
 
-	     //    fetch(url).then(res => res.json()).then((out) => {
-      //           var data = {
-      //           	'csrfmiddlewaretoken': getCookie('csrftoken'),
-      //               'latitude': myLat,
-      //               'longitude': myLng,
-      //               'address': out.results[0].formatted_address,
-      //           }
+          $.ajax({
+              url: url,
+              success: function(data){
+                  var myAddress = data.results[0].formatted_address
+                  data = {
+                      'csrfmiddlewaretoken': getCookie('csrftoken'),
+                      'latitude': myLat,
+                      'longitude': myLng,
+                      'address': myAddress,
+                  }
 
-      //           $.ajax({
-      //               url: urlLocation,
-      //               type: 'POST',
-      //               data: data,
-      //               error: function(e){
-      //                   console.log(e.message)
-      //               }
-      //           })
-		    // })
-            $.ajax({
-                url: url,
-                success: function(data){
-                    var myAddress = data.results[0].formatted_address
-                    data = {
-                        'csrfmiddlewaretoken': getCookie('csrftoken'),
-                        'latitude': myLat,
-                        'longitude': myLng,
-                        'address': myAddress,
-                    }
-
-                    $.ajax({
-                        url: urlLocation,
-                        type: 'POST',
-                        data: data,
-                        success: function(data){
-                        },
-                        error: function(e){
-                            console.log(e.message)
-                        }
-                    })
-                }
-            })
+                  $.ajax({
+                      url: urlLocation,
+                      type: 'POST',
+                      data: data,
+                      success: function(data){
+                      },
+                      error: function(e){
+                          console.log(e.message)
+                      }
+                  })
+              }
+          })
 	    },
 	    function(error){
 	        console.log(error.code)

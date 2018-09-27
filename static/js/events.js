@@ -13,21 +13,6 @@ $('.btn-verify').click(function(e){
     var verifyCount = parseInt(this_.attr('data-verifies'))
     var reportID    = parseInt(this_.attr("data-reportID"))
 
-    // fetch(verify_url).then(res => res.json()).then((out) => {
-    //     var newCount
-    //     if(out.verified){
-    //         newCount = verifyCount + 1
-    //         this_.attr("data-verifies", newCount)
-    //         $('#VerifyUnverify'+reportID).text('Unverify')
-    //         $('#verifies_'+reportID).text(newCount)
-    //     }else{
-    //         newCount = verifyCount - 1
-    //         this_.attr("data-verifies", newCount)
-    //         $('#VerifyUnverify'+reportID).text('Verify')
-    //         $('#verifies_'+reportID).text(newCount)
-    //     }
-    // })
-
     $.ajax({
         url: verify_url,
         method: 'GET',

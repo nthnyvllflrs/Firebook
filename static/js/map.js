@@ -18,8 +18,17 @@ function initMapLandingPage(){
                 // Geocoder
                 url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
                 geocoder_url = url + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
-                fetch(geocoder_url).then(res => res.json()).then((out) => {
-                    $('#userAddress').text(out.results[0].formatted_address)
+                // fetch(geocoder_url).then(res => res.json()).then((out) => {
+                //     $('#userAddress').text(out.results[0].formatted_address)
+                // })
+                $.ajax({
+                    url: geocoder_url,
+                    success: function(data){
+                        $('#userAddress').text(data.results[0].formatted_address)
+                    },
+                    error: function(e){
+                        console.log(e.message)
+                    }
                 })
 
                 var strictBounds = new google.maps.LatLngBounds(
@@ -78,9 +87,19 @@ function initMapForResponderSignUp(){
         $('#id_address').val('Geocoding Location, Please Wait...');
         url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
         url = url + marker.getPosition().lat() + ',' + marker.getPosition().lng() + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
-        fetch(url).then(res => res.json()).then((out) => {
-            newAddress = out.results[0].formatted_address
-            $('#id_address').val(newAddress);
+        // fetch(url).then(res => res.json()).then((out) => {
+        //     newAddress = out.results[0].formatted_address
+        //     $('#id_address').val(newAddress);
+        // })
+        $.ajax({
+            url: url,
+            success: function(data){
+                newAddress = out.results[0].formatted_address
+                $('#id_address').val(newAddress);
+            },
+            error: function(e){
+                console.log(e.message)
+            }
         })
 
         newLat = marker.getPosition().lat()
@@ -105,11 +124,11 @@ function initMapReportCreate(){
         $('#id_latitude').val(6.9214);
         $('#id_longitude').val(122.0790);
         $('#id_address').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
-        $('#id_info').text('We Have Reset Your Location Because Your Current Location Is Out Of Bounds.')
+        $('#id_info').text('We Have Reset Your Location Because Your Current Location Is Out Of Bounds.');
         
-        $('#userLat').val(6.9214);
-        $('#userLng').val(122.0790);
-        $('#userAddress').val('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
+        $('#userLat').text(6.9214);
+        $('#userLng').text(122.0790);
+        $('#userAddress').text('Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines');
     }
     
     map = new google.maps.Map(document.getElementById('map'),{zoom: 15, center: userCoordinates, disableDefaultUI: true})
@@ -156,16 +175,33 @@ function initMapReportCreate(){
             document.getElementById('userAddress').innerHTML = 'Geocoding Location, Please Wait...'
             url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
             geocoder_url = url + marker.getPosition().lat() + ',' + marker.getPosition().lng() + '&key=AIzaSyBLvHFeixDacvhmdX-L_0EoG4of6n0pM1A'
-            fetch(geocoder_url).then(res => res.json()).then((out) => {
-                newAddress = out.results[0].formatted_address
-                document.getElementById('userAddress').innerHTML = newAddress
-                document.getElementById('id_info').innerHTML = ''
+            // fetch(geocoder_url).then(res => res.json()).then((out) => {
+            //     newAddress = out.results[0].formatted_address
+            //     document.getElementById('userAddress').innerHTML = newAddress
+            //     document.getElementById('id_info').innerHTML = ''
+            // })
+            $.ajax({
+            url: geocoder_url,
+                success: function(data){
+                    newAddress = data.results[0].formatted_address
+                    // document.getElementById('userAddress').innerHTML = newAddress
+                    // document.getElementById('id_info').innerHTML = ''
+
+                    $('#userAddress').text(newAddress);
+                    $('#id_info').text("");
+                },
+                error: function(e){
+                    console.log(e.message)
+                }
             })
 
             newLat = marker.getPosition().lat()
-            document.getElementById('userLat').innerHTML = newLat
+            // document.getElementById('userLat').innerHTML = newLat
             newLng = marker.getPosition().lng()
-            document.getElementById('userLng').innerHTML = newLng
+            // document.getElementById('userLng').innerHTML = newLng
+
+            $('#userLat').text(newLat);
+            $('#userLng').text(newLng);
         }
     }
 }

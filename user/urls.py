@@ -20,7 +20,8 @@ urlpatterns = [
     path('notifications/', notifications, name='notification'),
 
     path('reporter/signup/', reporter_signup, name='reporter-signup'),
-    path('reporter/location/', reporter_location, name='reporter-location'),
+    path('reporter/location/', update_location, name='reporter-location'),
+    # path('reporter/location-api/', update_location, name='reporter-location-api'),
     path('reporter/<slug:username>/', reporter_detail, name='reporter-detail'),
 
     path('responder/signup/', responder_signup, name='responder-signup'),

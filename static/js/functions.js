@@ -40,9 +40,10 @@ function calculateLocation(){
                       type: 'POST',
                       data: data,
                       success: function(data){
+                        console.log(data.updated)
                       },
                       error: function(e){
-                          console.log(e.message)
+                        console.log(e.message)
                       }
                   })
               }

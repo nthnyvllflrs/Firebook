@@ -17,7 +17,6 @@ def report_create(request):
   if is_reporter and not request.user.reporter.activated:
     return redirect('report:report-timeline')
 
-  print("Hello !")
   if is_reporter or request.user.is_superuser:
     report_created, can_report = False, False
     time_threshold = datetime.now() - timedelta(minutes=5)

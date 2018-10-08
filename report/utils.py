@@ -28,7 +28,7 @@ def nearby_responder(report):
 
         # Send Notication To Responder
         for responder in report_responder:
-            construct_and_send_sms(report, responder) # SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
+            # construct_and_send_sms(report, responder) # SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
             Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
             # report.responder.add(responder.user)
 

@@ -52,10 +52,10 @@
                 {% endif %}
 
                 {% for fighter in object_list_2 %}
-                <div class="col-sm-3 mb-4" id="FighterColumn{{fighter.id}}">
+                <div class="col-sm-4 mb-4" id="FighterColumn{{fighter.id}}">
                     <div class="card">
                         <div class="card-body">
-                            Name: {{ fighter.name }}
+                            Name: {{ fighter.name }} <br>
                             Contact: {{ fighter.phone_number }}
                             <button class="btn btn-primary btn-sm btn-block font-weight-bold mt-2" data-toggle="modal" data-target="#Fighter{{fighter.id}}">
                                 Remove
@@ -91,75 +91,95 @@
                 {% endfor %}
 
                 <div class="col-sm-12">
-                    <h5>Verified Reports</h5>
+                    <h5>Cleared Reports</h5>
                     <hr />
                 </div>
 
                 {% if not object_list %}
                 <div class="col-sm-12">
-                    <h5 class="lead">No Verified Reports</h5>
+                    <h5 class="lead">No Cleared Reports</h5>
                 </div>
                 {% endif %}
 
                 {% for report in object_list %}
-                <div class="col-sm-4 mb-4" id="Column{{report.id}}">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                {{ report.emergency }}
-                                <small style="font-size: 0.5em;">{{ report.timestamp|timesince }} ago</small>
-                                <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
-                            </h4>
-                            <hr class="my-3">
-                            <ul class="list-unstyled">
-                                <li>Reporter : {{ report.reporter }}</li>
-                                <li>Location : {{ report.address }}</li>
-                            </ul>
-                            <hr class="my-3">
-                            <a class="btn btn-outline-primary btn-sm btn-block" href="{% url 'report:report-details' report.id %}">
-                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                &nbspDetails
-                            </a>
-                            <button class="btn btn-primary btn-sm btn-block font-weight-bold" data-toggle="modal" data-target="#Modal{{report.id}}">
-                                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                &nbspUnverify
-                            </button>
+                <div class="col-sm-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <h6 class="card-title">
+                                        {{ report.reporter }}
+                                        <small style="font-size: 0.6em;">{{ report.timestamp|timesince }} ago</small>
+
+                                        <span class="badge badge-pill badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
+                                    </h6>
+                                    <hr class="my-3">
+                                    <li>Location : {{ report.address }}</li>
+                                </ul>
+                                <hr>
+
+                                <span class="badge badge-pill badge-primary">{{ report.status }}</span>
+
+                                {% if report.responder.count > 0 and report.status != 'Cleared' %}
+                                <span class="badge badge-pill badge-primary">Responding</span>
+                                {% endif %}
+
+                                <div class="float-right">
+                                    <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        <!-- &nbspDetails -->
+                                    </a>
+                                    <button
+                                        id="verify_btn_{{report.id}}"
+                                        {% if request.user in report.verifies.all %}
+                                            class="btn-verify btn btn-primary btn-sm font-weight-bold"
+                                        {% else %}
+                                            class="btn-verify btn btn-outline-primary btn-sm font-weight-bold"
+                                        {% endif %}
+
+                                        data-href="{% url 'report:report-verify-toggle' report.id %}"
+                                        data-verifies="{{ report.verifies.count }}"
+                                        data-reportID="{{ report.id }}"
+                                    >
+
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <!-- &nbsp -->
+                                    <span id="VerifyUnverify{{report.id}}">
+                                        {% if request.user in report.verifies.all %}
+                                            <!-- Unverify -->
+                                        {% else %}
+                                            <!-- Verify -->
+                                        {% endif %}
+                                    </span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="modal fade" id="Modal{{report.id}}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">UNVERIFY REPORT?</h5>
-                        </div>
-                        <div class="modal-body">
-                            <ul class="list-unstyled">
-                                <li>Emergency : {{ report.emergency }}</li>
-                                <li>Report ID : {{ report.id }}</li>
-                                <li>Reporter : {{ report.reporter }}</li>
-                                <li>Occured : {{ report.timestamp|timesince }} ago</li>
-                                <li>Location : {{ report.address }}</li>
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a
-                                class="btn-verify btn btn-primary btn-sm font-weight-bold"
-                                href="#"
-                                data-href="{% url 'report:report-verify-toggle' report.id %}"
-                                data-verifies="{{ report.verifies.count }}"
-                                data-reportID="{{ report.id }}"
-                                data-dismiss="modal"
-                            >
-                            Confirm
-                            </a>
-                        </div>
-                        </div>
-                    </div>
-                </div>
                 {% endfor %}
+
+                <div class="col-sm-12">
+                      <ul class="pagination justify-content-center mb-4">
+                            {% if object_list.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">&laquo;</a>
+                            </li>
+
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ object_list.previous_page_number }}">previous</a>
+                            </li>
+                            {% endif %}
+                        
+                        
+                            {% if object_list.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ object_list.next_page_number }}">next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ object_list.paginator.num_pages }}">&raquo;</a>
+                            </li>
+                            {% endif %}
+                      </ul>
+                </div>
             </div>
         </div>
     </div>

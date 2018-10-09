@@ -1,6 +1,7 @@
 from django.contrib.auth import update_session_auth_hash # Change Password
 from django.contrib.auth.decorators import login_required # Decorator
 from django.contrib.auth.forms import PasswordChangeForm # Change Password
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Count, Sum
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -107,7 +108,12 @@ def responder_detail(request, username):
     return redirect('report:report-timeline')
 
   _object = get_object_or_404(User, username=username)
-  _object_list = Report.objects.filter(verifies=_object).order_by('-timestamp')
+  # _object_list = Report.objects.filter(verifies=_object).order_by('-timestamp')
+  _object_list = Report.objects.filter(responder=_object).order_by('-timestamp')
+  paginator = Paginator(_object_list, 3) # Show 3 Reports per page
+  page = request.GET.get('page')
+  _object_list = paginator.get_page(page)
+
   _object_list_2 = Fighter.objects.filter(responder=request.user.responder)
   return render(request, 'user/responder-profile.html', {'object': _object, 'object_list': _object_list, 'object_list_2': _object_list_2})
 

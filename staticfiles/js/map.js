@@ -209,6 +209,11 @@ function initMapReportDetailResponder(){
     reportCoordinates = {lat: reportLat, lng: reportLng}
     var map = new google.maps.Map(document.getElementById('map'),{zoom: 18, center: reportCoordinates, disableDefaultUI: true})
 
+    var marker = new google.maps.Marker({
+        position: reportCoordinates,
+        map: map,
+    })
+    
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     directionsDisplay.setMap(map);

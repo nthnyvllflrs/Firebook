@@ -89,7 +89,7 @@ function initMapForResponderSignUp(){
         $.ajax({
             url: url,
             success: function(data){
-                newAddress = out.results[0].formatted_address
+                newAddress = data.results[0].formatted_address
                 $('#id_address').val(newAddress);
             },
             error: function(e){

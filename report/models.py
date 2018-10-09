@@ -19,6 +19,7 @@ class Report(models.Model):
   status      = models.CharField(max_length=10, choices=REPOR_STATUS, default="Ongoing")
 
   emergency   = models.CharField(max_length=10, choices=EMERGENCY_CHOICES)
+  details     = models.CharField(max_length=300, blank=True)
   latitude    = models.CharField(max_length=50)
   longitude   = models.CharField(max_length=50)
   address     = models.TextField(max_length=300)

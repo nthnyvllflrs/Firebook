@@ -6,7 +6,7 @@
         <div class="col-sm-4 offset-sm-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <h5 class="card-title">Change Password</h5>
+                    <h5 class="card-title">Fighter Creation</h5>
 
                     <form method="post">
                         {% csrf_token %}
@@ -16,7 +16,7 @@
                                 {{ field.errors }}
                             </div>
                         {% endfor %}
-                        <button type="submit" class="btn btn-primary btn-block font-weight-bold">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         <!-- <a href="#" class="btn btn-secondary btn-sm btn-block font-weight-bold">Cancel</a> -->
                     </form>
                 </div>
@@ -25,21 +25,18 @@
     </div>
 </div>
 
-{% if password_updated %}
+{% if account_created %}
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Account Created</h5>
+        </div>
         <div class="modal-body">
-            Your password was successfully updated!.
+            A new fire fighter was created
         </div>
         <div class="modal-footer">
-            <a class="btn btn-block btn-primary" href="
-            {% if request.user.reporter %}
-                {% url 'user:reporter-detail' request.user %}
-            {% else %}
-                {% url 'user:responder-detail' request.user %}
-            {% endif %}
-            ">Ok</a>
+            <a class="btn btn-block btn-primary" href="{% url 'user:responder-detail' request.user %}">Ok</a>
         </div>
         </div>
     </div>

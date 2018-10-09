@@ -28,4 +28,7 @@ urlpatterns = [
     
     path('notification/<int:pk>/viewed/', notification_viewed, name='responder-notification-viewed'),
     path('responder/<slug:username>/', responder_detail, name='responder-detail'),
+    path('responder/<slug:username>/fighter/creation/', responder_fighter_creation, name='responder-fighter-creation'),
+    path('responder/<slug:username>/fighter/<int:pk>/deletion/', responder_fighter_deletion, name='responder-fighter-deletion'),
+    path('responder/<slug:username>/fighter/', responder_fighter, name='responder-fighter'),
 ]

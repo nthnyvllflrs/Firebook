@@ -16,12 +16,12 @@
                         <div class="card">
                             <div class="card-body">
                                 <ul class="list-unstyled">
-                                    <h5 class="card-title">
+                                    <h6 class="card-title">
                                         {{ report.reporter }}
                                         <small style="font-size: 0.6em;">{{ report.timestamp|timesince }} ago</small>
 
                                         <span class="badge badge-pill badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
-                                    </h5>
+                                    </h6>
                                     <hr class="my-3">
                                     <li>Location : {{ report.address }}</li>
 

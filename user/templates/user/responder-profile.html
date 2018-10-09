@@ -6,7 +6,7 @@
         <div class="col-sm-3">
             <div class="row mt-4">
                 <div class="col-sm-12">
-                    <h4>Responder Details</h4>
+                    <h5>Responder Details</h5>
                     <hr />
                 </div>
                 <div class="container">
@@ -26,6 +26,11 @@
                                         &nbspChange Password
                                     </a>
                                 </div>
+                                <div class="col-sm-12 mt-2">
+                                    <a href="{% url 'user:responder-fighter-creation' request.user %}" class="btn btn-primary btn-sm btn-block font-weight-bold">
+                                        &nbspAdd Fire Fighter
+                                    </a>
+                                </div>
                             </div>
                         </li>
                         {% endif %}
@@ -37,13 +42,62 @@
         <div class="col-sm">
             <div class="row mt-4">
                 <div class="col-sm-12">
-                    <h4>Verified Reports</h4>
+                    <h5>Fire Fighters</h5>
+                    <hr />
+                </div>
+                {% if not object_list_2 %}
+                <div class="col-sm-12 mb-4">
+                    <h5 class="lead">No Registered Fire Fighters</h5>
+                </div>
+                {% endif %}
+
+                {% for fighter in object_list_2 %}
+                <div class="col-sm-3 mb-4" id="FighterColumn{{fighter.id}}">
+                    <div class="card">
+                        <div class="card-body">
+                            Name: {{ fighter.name }}
+                            Contact: {{ fighter.phone_number }}
+                            <button class="btn btn-primary btn-sm btn-block font-weight-bold mt-2" data-toggle="modal" data-target="#Fighter{{fighter.id}}">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="Fighter{{fighter.id}}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Fire Fighter?</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>Remove fire fighter with name <b><i>{{ fighter.name }}</i></b> and contact number <b><i>{{ fighter.phone_number }}</i></b> ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a
+                                class="btn-remove btn btn-primary btn-sm font-weight-bold"
+                                href="#"
+                                data-href="{% url 'user:responder-fighter-deletion' request.user.responder fighter.id %}"
+                                data-fighterID="{{ fighter.id }}"
+                                data-dismiss="modal"
+                            >
+                            Remove
+                            </a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="col-sm-12">
+                    <h5>Verified Reports</h5>
                     <hr />
                 </div>
 
                 {% if not object_list %}
                 <div class="col-sm-12">
-                    <h5>No Verified Reports</h5>
+                    <h5 class="lead">No Verified Reports</h5>
                 </div>
                 {% endif %}
 

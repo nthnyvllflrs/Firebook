@@ -1,4 +1,5 @@
 import geocoder
+import threading
 
 from datetime import datetime, timedelta
 
@@ -46,7 +47,9 @@ def report_create(request):
 
         report.save()
 
-        nearby_responder(report)
+        t = threading.Thread(target=nearby_responder(report))
+        t.setDaemon = True
+        t.start()
         
         report_created = True
     else:

@@ -15,10 +15,11 @@ class ReportForm(forms.ModelForm):
   class Meta:
     model = Report
     fields = (
-      'emergency', 'latitude', 'longitude', 'address',
+      'emergency', 'details', 'latitude', 'longitude', 'address',
     ) 
 
     widgets = {
+      'details': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'form-control', 'placeholder': 'Additional Information'}),
       'latitude': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Latitude'}),
       'longitude': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Longitude'}),
       'address': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'form-control', 'placeholder': 'Address'}),

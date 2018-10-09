@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from .models import Reporter, Responder
+from .models import Reporter, Responder, Fighter
 
 RESPONDER_STATION = {
     # ('Crime', 'Crime'),
@@ -87,6 +87,18 @@ class ResponderForm(UserCreationForm):
     except:
       raise forms.ValidationError("Invalide Longitude")
     return longitude
+
+
+class FighterForm(forms.ModelForm):
+  name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}))
+  phone_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}))
+
+  class Meta:
+    model = Fighter
+    fields = (
+      'name',
+      'phone_number',
+    )
 
 
 class LoginForm(AuthenticationForm):

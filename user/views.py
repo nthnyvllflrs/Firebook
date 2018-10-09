@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .utils import *
 
-from .models import Notification, Reporter, Responder
+from .models import Notification, Reporter, Responder, Fighter
 from report.models import Report
 
 
@@ -108,7 +108,8 @@ def responder_detail(request, username):
 
   _object = get_object_or_404(User, username=username)
   _object_list = Report.objects.filter(verifies=_object).order_by('-timestamp')
-  return render(request, 'user/responder-profile.html', {'object': _object, 'object_list': _object_list})
+  _object_list_2 = Fighter.objects.filter(responder=request.user.responder)
+  return render(request, 'user/responder-profile.html', {'object': _object, 'object_list': _object_list, 'object_list_2': _object_list_2})
 
 @login_required
 def notifications(request):
@@ -120,3 +121,43 @@ def notifications(request):
 def responder_notifications_alerts(request):
   object_list = Notification.objects.filter(recipient=request.user, viewed=False).order_by('-timestamp')
   return render(request, 'snippets/notifications.html', {'object_list': object_list})
+
+@login_required
+def responder_fighter(request, username):
+
+  if not Responder.objects.filter(user=request.user).exists():
+    return redirect('report:report-timeline')
+
+  object_list = Fighter.objects.filter(responder=request.user.responder).values('phone_number')
+  return render(request, 'user/responder-fighter.html', {'object_list': object_list})
+
+@login_required
+def responder_fighter_creation(request, username):
+
+  if not Responder.objects.filter(user=request.user).exists():
+    return redirect('report:report-timeline')
+
+  if request.method == 'POST':
+    form = FighterForm(request.POST)
+    if form.is_valid():
+      fighter = form.save(commit=False)
+      fighter.responder = request.user.responder
+      fighter.save()
+
+      account_created = True
+  else:
+    form = FighterForm()
+    account_created = False
+
+  return render(request, 'user/responder-fighter-creation.html', {'form': form, 'account_created': account_created})
+
+@login_required
+def responder_fighter_deletion(request, username, pk):
+
+  if not Responder.objects.filter(user=request.user).exists():
+    return redirect('report:report-timeline')
+
+  _object = get_object_or_404(Fighter, pk=pk)
+  _object.delete()
+
+  return redirect('user:responder-detail', request.user.responder)

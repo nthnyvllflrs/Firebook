@@ -44,6 +44,13 @@ class Responder(models.Model):
     return self.user.username
 
 
+class Fighter(models.Model):
+  responder     = models.ForeignKey(Responder, on_delete=models.CASCADE)
+  name          = models.CharField(max_length=300)
+
+  phone_number  = models.CharField(max_length=30)
+
+
 class Notification(models.Model):
   sender        = models.ForeignKey(User, on_delete=models.CASCADE)
   recipient     = models.ForeignKey(User, on_delete=models.CASCADE, related_name="is_recipient")

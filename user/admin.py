@@ -15,6 +15,12 @@ class RespondersAdmin(admin.ModelAdmin):
 admin.site.register(Responder, RespondersAdmin)
 
 
+class FightersAdmin(admin.ModelAdmin):
+  list_display = ('name', 'responder', 'phone_number')
+
+admin.site.register(Fighter, FightersAdmin)
+
+
 class NotificationsAdmin(admin.ModelAdmin):
   list_display = ('sender', 'recipient', 'title', 'report', 'timestamp')
 

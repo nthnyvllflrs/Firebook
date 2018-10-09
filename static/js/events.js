@@ -1,3 +1,24 @@
+// Responder profile view, remove fire fighter function (Responder Detail)
+$('.btn-remove').click(function(e){
+    var this_ = $(this)
+    var fighter_id = this_.attr('data-fighterID')
+    var remove_url = this_.attr('data-href')
+
+    $("#FighterColumn"+fighter_id).attr("hidden", "hidden")
+
+    $.ajax({
+        url: remove_url,
+        method: 'GET',
+        data: {},
+        success: function(data){
+            window.location.href=window.location.href
+        },
+        error: function(data){
+            console.log(data)
+        }
+    })
+})
+
 // Responder profile view, verify-unverify event function (Responder Detail)
 $('.btn-verify').click(function(e){
     var this_ = $(this)

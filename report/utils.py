@@ -3,7 +3,7 @@ from django.conf import settings
 from twilio.rest import Client
 
 from .models import Report
-from user.models import Responder, Reporter, Notification
+from user.models import Responder, Reporter, Notification, Fighter
 
 client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
 
@@ -28,8 +28,15 @@ def nearby_responder(report):
 
         # Send Notication To Responder
         for responder in report_responder:
-            # construct_and_send_sms(report, responder) # SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
+            construct_and_send_sms(report, responder) # SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
             Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
+            
+            for fighter in Fighter.objects.filter(responder=responder):
+                client.messages.create(
+                    to      = fighter.phone_number,
+                    from_   = settings.TWILIO_PHONE_NUMBER,
+                    body    = 'Nearby Report Notification\nResponder : %s \nReport # : %s \nReporter : %s \nAddress : %s' % (responder.user.username, report.id, report.reporter, report.address)
+                )
             # report.responder.add(responder.user)
 
     if reporter_list:
@@ -38,7 +45,6 @@ def nearby_responder(report):
             distance = calculate_distance(report.latitude, report.longitude, reporter.latitude, reporter.longitude) 
             if distance <= 500:
                 nearby_reporters.append(reporter)
-                print(distance)
 
         # Send Notification To Nearby Reporters
         for reporter in nearby_reporters:

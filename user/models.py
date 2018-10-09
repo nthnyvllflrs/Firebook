@@ -27,6 +27,7 @@ class Reporter(models.Model):
 
 class Responder(models.Model):
   user          = models.OneToOneField(User, on_delete=models.CASCADE)
+  display_name  = models.CharField(max_length=100)
   
   phone_number  = models.CharField(max_length=30)
   station       = models.CharField(max_length=10, choices=RESPONDER_STATION)

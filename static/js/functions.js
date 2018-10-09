@@ -81,7 +81,7 @@ function timelineLongPolling(){
         setTimeout(function(){
             $("#timelineView").load(urlTimeline);
             timelinePoll();
-        }, 8000);
+        }, 5000);
     })();
 }
 
@@ -92,7 +92,7 @@ function notificationLongPolling(){
         setTimeout(function(){
             $("#notificationView").load(urlNotification);
             notificationPoll();
-        }, 5000);
+        }, 3000);
     })();
 }
 

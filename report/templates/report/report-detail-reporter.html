@@ -16,6 +16,7 @@
                         <li class="list-group-item">Occured : {{ object.timestamp|timesince }} ago</li>
                         <li class="list-group-item">Address : {{ object.address }}</li>
                         <li class="list-group-item">Verifies :  <span id="verifies_{{ object.id }}">{{ object.verifies.count }}</span></li>
+                        <li class="list-group-item">Status : {{ object.status }}</li>
                         <li class="list-group-item">
                             <a
                                 class="btn-verify btn btn-block btn-primary btn-sm font-weight-bold"

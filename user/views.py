@@ -50,6 +50,7 @@ def responder_signup(request):
       user = User.objects.get(username=form.cleaned_data.get('username'))
       Responder.objects.create(
         user=user,
+        display_name = form.cleaned_data.get('display_name'),
         phone_number = form.cleaned_data.get('phone_number'),
         station = form.cleaned_data.get('station'),
         latitude = form.cleaned_data.get('latitude'),

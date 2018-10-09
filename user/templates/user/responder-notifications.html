@@ -13,6 +13,7 @@
             <small>
               <li class="list-group-item mb-2">
                 <strong>
+                  {{notification.title}}
                   <a href="{% url 'user:reporter-detail' notification.sender %}">{{notification.sender}}</a>
                 </strong>
                 {{notification.report.timestamp|timesince}} ago 

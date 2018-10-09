@@ -11,12 +11,32 @@
                 </div>
                 <div class="container">
                     <ul class="list-group">
-                        <li class="list-group-item">Type : {{ object.emergency }}</li>
+                        <!-- <li class="list-group-item">Type : {{ object.emergency }}</li> -->
                         <li class="list-group-item">Reporter : {{ object.reporter }}</li>
                         <li class="list-group-item">Occured : {{ object.timestamp|timesince }} ago</li>
                         <li class="list-group-item">Address : {{ object.address }}</li>
                         <li class="list-group-item">Verifies : <span id="verifies_{{ object.id }}">{{ object.verifies.count }}</span></li>
+                        <li class="list-group-item">Status : <span class="badge badge-pill badge-primary" id="status_{{ object.id }}">{{ object.status }}</span></li>
                         <li class="list-group-item">
+                            {% if is_responder and not request.user in object.responder.all %}
+                                <a 
+                                    class="btn-respond btn btn-block btn-primary btn-sm font-weight-bold"
+                                    href="#"
+                                    data-href="{% url 'report:report-respond-toggle' object.id %}"
+                                >
+                                    Respond
+                                </a>
+                            {% endif %}
+                            {% if request.user in object.responder.all and object.status == 'Ongoing' %}
+                                <a 
+                                    class="btn-status btn btn-block btn-primary btn-sm font-weight-bold"
+                                    href="#"
+                                    data-href="{% url 'report:report-status-toggle' object.id %}"
+                                    data-reportID="{{ object.id }}"
+                                >
+                                    Cleared
+                                </a>
+                            {% endif %}
                             <a
                                 class="btn-verify btn btn-block btn-primary btn-sm font-weight-bold"
                                 href="#"

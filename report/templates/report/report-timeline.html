@@ -8,16 +8,44 @@
         <div class="container">
             <div class="row mt-4">
                 <div class="col-sm-12">
-                    <h4>Timeline</h4>
+                    <h5>
+                        Ongoing Reports
+                        {% if object_list.count == 0 %}
+                            <small class="lead" style="font-size: 0.6em;">(No Ongoing Reports)</small>
+                        {% endif %}
+                    </h5>
                     <hr />
                 </div>
+                
                 {% for report in object_list %}
 
                     <div class="col-sm-4 mb-4">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">
-                                    {{ report.emergency }}
+                                <ul class="list-unstyled">
+                                    <h5 class="card-title">
+                                        {{ report.reporter }}
+                                        <small style="font-size: 0.6em;">{{ report.timestamp|timesince }} ago</small>
+
+                                        <span class="badge badge-pill badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
+                                    </h5>
+                                    <hr class="my-3">
+                                    <li>Location : {{ report.address }}</li>
+
+                                    <!-- {% if report.status == "Ongoing" %}
+                                        <li><span class="badge badge-pill badge-danger float-right">{{ report.status }}</span></li>
+                                    {% else %}
+                                        <li><span class="badge badge-pill badge-success float-right">{{ report.status }}</span></li>
+                                    {% endif %} -->
+                                    
+                                </ul>
+
+                                <!-- <div class="float-right">
+                                    <span class="badge badge-pill badge-primary">{{ report.status }}</span>
+                                <span class="badge badge-pill badge-primary">Responding</span>
+                                </div> -->
+                                
+                                <!-- <h4 class="card-title">
                                     <small style="font-size: 0.5em;">{{ report.timestamp|timesince }} ago</small>
                                     <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
                                 </h4>
@@ -31,25 +59,136 @@
                                         
                                     <li>Location : {{ report.address }}</li>
                                 </ul>
+                                 -->
+                                <hr>
+
+                                <span class="badge badge-pill badge-primary">{{ report.status }}</span>
+
+                                {% if report.responder.count > 0 and report.status != 'Cleared' %}
+                                <span class="badge badge-pill badge-primary">Responding</span>
+                                {% endif %}
+
                                 <div class="float-right">
                                     <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                        &nbspDetails
+                                        <!-- &nbspDetails -->
                                     </a>
                                     <button
-                                        class="btn-verify btn btn-primary btn-sm font-weight-bold"
+                                        id="verify_btn_{{report.id}}"
+                                        {% if request.user in report.verifies.all %}
+                                            class="btn-verify btn btn-primary btn-sm font-weight-bold"
+                                        {% else %}
+                                            class="btn-verify btn btn-outline-primary btn-sm font-weight-bold"
+                                        {% endif %}
+
                                         data-href="{% url 'report:report-verify-toggle' report.id %}"
                                         data-verifies="{{ report.verifies.count }}"
                                         data-reportID="{{ report.id }}"
                                     >
 
                                     <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                    &nbsp
+                                    <!-- &nbsp -->
                                     <span id="VerifyUnverify{{report.id}}">
                                         {% if request.user in report.verifies.all %}
-                                            Unverify
+                                            <!-- Unverify -->
                                         {% else %}
-                                            Verify
+                                            <!-- Verify -->
+                                        {% endif %}
+                                    </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+                <div class="col-sm-12">
+                    <h5>
+                        Recent Cleared Reports
+                        {% if object_list_2.count == 0 %}
+                            <small class="lead" style="font-size: 0.6em;">(No Cleared Reports)</small>
+                        {% endif %}
+                    </h5>
+                    <small><a href="{% url 'report:report-cleared' %}">View List Of All Cleared Reports</a></small>
+                    <hr />
+                </div>
+                {% for report in object_list_2 %}
+
+                    <div class="col-sm-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <h5 class="card-title">
+                                        {{ report.reporter }}
+                                        <small style="font-size: 0.6em;">{{ report.timestamp|timesince }} ago</small>
+
+                                        <span class="badge badge-pill badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
+                                    </h5>
+                                    <hr class="my-3">
+                                    <li>Location : {{ report.address }}</li>
+
+                                    <!-- {% if report.status == "Ongoing" %}
+                                        <li><span class="badge badge-pill badge-danger float-right">{{ report.status }}</span></li>
+                                    {% else %}
+                                        <li><span class="badge badge-pill badge-success float-right">{{ report.status }}</span></li>
+                                    {% endif %} -->
+                                    
+                                </ul>
+
+                                <!-- <div class="float-right">
+                                    <span class="badge badge-pill badge-primary">{{ report.status }}</span>
+                                <span class="badge badge-pill badge-primary">Responding</span>
+                                </div> -->
+                                
+                                <!-- <h4 class="card-title">
+                                    <small style="font-size: 0.5em;">{{ report.timestamp|timesince }} ago</small>
+                                    <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
+                                </h4>
+                                <hr class="my-3">
+                                <ul class="list-unstyled">
+                                    {% if report.reporter == request.user %}
+                                        <li>Reporter : You</a></li>
+                                    {% else %}
+                                        <li>Reporter : <a href="{% url 'user:reporter-detail' report.reporter %}">{{ report.reporter }}</a></li>
+                                    {% endif %}
+                                        
+                                    <li>Location : {{ report.address }}</li>
+                                </ul>
+                                 -->
+                                <hr>
+
+                                <span class="badge badge-pill badge-primary">{{ report.status }}</span>
+
+                                {% if report.responder.count > 0 and report.status != 'Cleared' %}
+                                <span class="badge badge-pill badge-primary">Responding</span>
+                                {% endif %}
+
+                                <div class="float-right">
+                                    <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        <!-- &nbspDetails -->
+                                    </a>
+                                    <button
+                                        id="verify_btn_{{report.id}}"
+                                        {% if request.user in report.verifies.all %}
+                                            class="btn-verify btn btn-primary btn-sm font-weight-bold"
+                                        {% else %}
+                                            class="btn-verify btn btn-outline-primary btn-sm font-weight-bold"
+                                        {% endif %}
+
+                                        data-href="{% url 'report:report-verify-toggle' report.id %}"
+                                        data-verifies="{{ report.verifies.count }}"
+                                        data-reportID="{{ report.id }}"
+                                    >
+
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <!-- &nbsp -->
+                                    <span id="VerifyUnverify{{report.id}}">
+                                        {% if request.user in report.verifies.all %}
+                                            <!-- Unverify -->
+                                        {% else %}
+                                            <!-- Verify -->
                                         {% endif %}
                                     </span>
                                     </button>

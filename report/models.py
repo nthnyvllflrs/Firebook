@@ -7,14 +7,21 @@ EMERGENCY_CHOICES = {
     ('Fire', 'Fire'),
 }
 
-class Report(models.Model):
-  reporter = models.ForeignKey(User, on_delete=models.CASCADE)
-  verifies = models.ManyToManyField(User, related_name="is_verified", blank=True)
+REPOR_STATUS = {
+    ('Ongoing', 'Ongoing'),
+    ('Cleared', 'Cleared'),
+}
 
-  emergency = models.CharField(max_length=10, choices=EMERGENCY_CHOICES)
-  latitude = models.CharField(max_length=50)
-  longitude = models.CharField(max_length=50)
-  address = models.TextField(max_length=300)
+class Report(models.Model):
+  reporter    = models.ForeignKey(User, on_delete=models.CASCADE)
+  responder   = models.ManyToManyField(User, related_name="is_responded", blank=True)
+  verifies    = models.ManyToManyField(User, related_name="is_verified", blank=True)
+  status      = models.CharField(max_length=10, choices=REPOR_STATUS, default="Ongoing")
+
+  emergency   = models.CharField(max_length=10, choices=EMERGENCY_CHOICES)
+  latitude    = models.CharField(max_length=50)
+  longitude   = models.CharField(max_length=50)
+  address     = models.TextField(max_length=300)
 
   timestamp = models.DateTimeField(auto_now_add=True)
 

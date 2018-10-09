@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import *
 from .utils import nearby_responder
-from user.models import Reporter
+from user.models import Reporter, Notification
 
 @login_required
 def report_create(request):
@@ -83,12 +83,13 @@ def report_timeline(request):
     account_active = True
 
   if account_active:
-    object_list = Report.objects.order_by('-timestamp')
+    object_list = Report.objects.filter(status='Ongoing').order_by('-timestamp')
+    object_list_2 = Report.objects.filter(status='Cleared').order_by('-timestamp')[:6]
 
     if request.is_ajax():
-      return render(request, 'report/report-timeline-ajax.html', {'object_list': object_list})
+      return render(request, 'report/report-timeline-ajax.html', {'object_list': object_list, 'object_list_2': object_list_2})
 
-    return render(request, 'report/report-timeline.html', {'account_active': account_active, 'object_list': object_list})
+    return render(request, 'report/report-timeline.html', {'account_active': account_active, 'object_list': object_list, 'object_list_2': object_list_2})
   
   return render(request,'report/report-timeline.html', {'account_active': account_active})
 
@@ -99,10 +100,21 @@ def report_detail(request, pk):
   if is_reporter and not request.user.reporter.activated:
     return redirect('report:report-timeline')
 
-  is_reporter = Reporter.objects.filter(user=request.user).exists()
   _object = get_object_or_404(Report, pk=pk)
 
   if is_reporter or request.user.is_superuser:
     return render(request, 'report/report-detail-reporter.html', {'object': _object})
   else:
-    return render(request, 'report/report-detail-responder.html', {'object': _object})
+    is_responder = Notification.objects.filter(report=_object, recipient=request.user).exists()
+    return render(request, 'report/report-detail-responder.html', {'object': _object, 'is_responder': is_responder})
+
+@login_required
+def report_cleared(request):
+
+  is_reporter = Reporter.objects.filter(user=request.user).exists()
+  if is_reporter and not request.user.reporter.activated:
+    return redirect('report:report-timeline')
+
+  object_list = Report.objects.filter(status='Cleared').order_by('-timestamp')
+
+  return render(request,'report/report-cleared.html', {'object_list': object_list})

@@ -61,7 +61,7 @@ def report_respond(request, pk):
       obj.responder.add(user)
       updated = True
 
-  Notification.objects.create(sender=request.user, recipient=obj.reporter, report=obj, title='Responder Is Responding')
+  Notification.objects.create(sender=request.user, recipient=obj.reporter, report=obj, title='Responder Responding')
 
   data = {
     'updated': updated,

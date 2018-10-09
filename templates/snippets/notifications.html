@@ -5,7 +5,15 @@
       <strong class="alert-heading">{{notification.title}}</strong>
       <hr>
       <small>
-        <p class="mb-0">Reporter : {{notification.sender}}</p>
+
+        {% if notification.title == 'Responder Responding' %}
+          <p class="mb-0">Responder : {{notification.sender}}</p>
+        {% else %}
+          <p class="mb-0">Reporter : {{notification.sender}}</p>
+        {% endif %}
+        <!-- Responder Responding
+        Report Notification
+        Nearby Emergency -->
         <p class="mb-0 mt-0">Address : {{notification.report.address}}</p>
         <a 
           href=""

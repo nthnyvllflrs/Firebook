@@ -103,58 +103,58 @@
 
                 {% for report in object_list %}
                 <div class="col-sm-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <ul class="list-unstyled">
-                                    <h6 class="card-title">
-                                        {{ report.reporter }}
-                                        <small style="font-size: 0.6em;">{{ report.timestamp|timesince }} ago</small>
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <h6 class="card-title">
+                                    {{ report.reporter }}
+                                    <small style="font-size: 0.6em;">{{ report.timestamp|timesince }} ago</small>
 
-                                        <span class="badge badge-pill badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
-                                    </h6>
-                                    <hr class="my-3">
-                                    <li>Location : {{ report.address }}</li>
-                                </ul>
-                                <hr>
+                                    <span class="badge badge-pill badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
+                                </h6>
+                                <hr class="my-3">
+                                <li>Location : {{ report.address }}</li>
+                            </ul>
+                            <hr>
 
-                                <span class="badge badge-pill badge-primary">{{ report.status }}</span>
+                            <span class="badge badge-pill badge-primary">{{ report.status }}</span>
 
-                                {% if report.responder.count > 0 and report.status != 'Cleared' %}
-                                <span class="badge badge-pill badge-primary">Responding</span>
-                                {% endif %}
+                            {% if report.responder.count > 0 and report.status != 'Cleared' %}
+                            <span class="badge badge-pill badge-primary">Responding</span>
+                            {% endif %}
 
-                                <div class="float-right">
-                                    <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
-                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                        <!-- &nbspDetails -->
-                                    </a>
-                                    <button
-                                        id="verify_btn_{{report.id}}"
-                                        {% if request.user in report.verifies.all %}
-                                            class="btn-verify btn btn-primary btn-sm font-weight-bold"
-                                        {% else %}
-                                            class="btn-verify btn btn-outline-primary btn-sm font-weight-bold"
-                                        {% endif %}
+                            <div class="float-right">
+                                <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    <!-- &nbspDetails -->
+                                </a>
+                                <button
+                                    id="verify_btn_{{report.id}}"
+                                    {% if request.user in report.verifies.all %}
+                                        class="btn-verify btn btn-primary btn-sm font-weight-bold"
+                                    {% else %}
+                                        class="btn-verify btn btn-outline-primary btn-sm font-weight-bold"
+                                    {% endif %}
 
-                                        data-href="{% url 'report:report-verify-toggle' report.id %}"
-                                        data-verifies="{{ report.verifies.count }}"
-                                        data-reportID="{{ report.id }}"
-                                    >
+                                    data-href="{% url 'report:report-verify-toggle' report.id %}"
+                                    data-verifies="{{ report.verifies.count }}"
+                                    data-reportID="{{ report.id }}"
+                                >
 
-                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                    <!-- &nbsp -->
-                                    <span id="VerifyUnverify{{report.id}}">
-                                        {% if request.user in report.verifies.all %}
-                                            <!-- Unverify -->
-                                        {% else %}
-                                            <!-- Verify -->
-                                        {% endif %}
-                                    </span>
-                                    </button>
-                                </div>
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                <!-- &nbsp -->
+                                <span id="VerifyUnverify{{report.id}}">
+                                    {% if request.user in report.verifies.all %}
+                                        <!-- Unverify -->
+                                    {% else %}
+                                        <!-- Verify -->
+                                    {% endif %}
+                                </span>
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
                 {% endfor %}
 
                 <div class="col-sm-12">

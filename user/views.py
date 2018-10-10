@@ -115,6 +115,7 @@ def responder_detail(request, username):
   _object_list = paginator.get_page(page)
 
   _object_list_2 = Fighter.objects.filter(responder=request.user.responder)
+  
   return render(request, 'user/responder-profile.html', {'object': _object, 'object_list': _object_list, 'object_list_2': _object_list_2})
 
 @login_required
@@ -127,15 +128,6 @@ def notifications(request):
 def responder_notifications_alerts(request):
   object_list = Notification.objects.filter(recipient=request.user, viewed=False).order_by('-timestamp')
   return render(request, 'snippets/notifications.html', {'object_list': object_list})
-
-@login_required
-def responder_fighter(request, username):
-
-  if not Responder.objects.filter(user=request.user).exists():
-    return redirect('report:report-timeline')
-
-  object_list = Fighter.objects.filter(responder=request.user.responder).values('phone_number')
-  return render(request, 'user/responder-fighter.html', {'object_list': object_list})
 
 @login_required
 def responder_fighter_creation(request, username):

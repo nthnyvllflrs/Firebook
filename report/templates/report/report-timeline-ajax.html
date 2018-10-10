@@ -24,35 +24,8 @@
                                     </h6>
                                     <hr class="my-3">
                                     <li>Location : {{ report.address }}</li>
-
-                                    <!-- {% if report.status == "Ongoing" %}
-                                        <li><span class="badge badge-pill badge-danger float-right">{{ report.status }}</span></li>
-                                    {% else %}
-                                        <li><span class="badge badge-pill badge-success float-right">{{ report.status }}</span></li>
-                                    {% endif %} -->
-                                    
                                 </ul>
 
-                                <!-- <div class="float-right">
-                                    <span class="badge badge-pill badge-primary">{{ report.status }}</span>
-                                <span class="badge badge-pill badge-primary">Responding</span>
-                                </div> -->
-                                
-                                <!-- <h4 class="card-title">
-                                    <small style="font-size: 0.5em;">{{ report.timestamp|timesince }} ago</small>
-                                    <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
-                                </h4>
-                                <hr class="my-3">
-                                <ul class="list-unstyled">
-                                    {% if report.reporter == request.user %}
-                                        <li>Reporter : You</a></li>
-                                    {% else %}
-                                        <li>Reporter : <a href="{% url 'user:reporter-detail' report.reporter %}">{{ report.reporter }}</a></li>
-                                    {% endif %}
-                                        
-                                    <li>Location : {{ report.address }}</li>
-                                </ul>
-                                 -->
                                 <hr>
 
                                 <span class="badge badge-pill badge-primary">{{ report.status }}</span>
@@ -64,7 +37,6 @@
                                 <div class="float-right">
                                     <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                        <!-- &nbspDetails -->
                                     </a>
                                     <button
                                         id="verify_btn_{{report.id}}"
@@ -79,15 +51,7 @@
                                         data-reportID="{{ report.id }}"
                                     >
 
-                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                    <!-- &nbsp -->
-                                    <span id="VerifyUnverify{{report.id}}">
-                                        {% if request.user in report.verifies.all %}
-                                            <!-- Unverify -->
-                                        {% else %}
-                                            <!-- Verify -->
-                                        {% endif %}
-                                    </span>
+                                        <i class="fa fa-check-circle" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -120,35 +84,7 @@
                                     </h5>
                                     <hr class="my-3">
                                     <li>Location : {{ report.address }}</li>
-
-                                    <!-- {% if report.status == "Ongoing" %}
-                                        <li><span class="badge badge-pill badge-danger float-right">{{ report.status }}</span></li>
-                                    {% else %}
-                                        <li><span class="badge badge-pill badge-success float-right">{{ report.status }}</span></li>
-                                    {% endif %} -->
-                                    
                                 </ul>
-
-                                <!-- <div class="float-right">
-                                    <span class="badge badge-pill badge-primary">{{ report.status }}</span>
-                                <span class="badge badge-pill badge-primary">Responding</span>
-                                </div> -->
-                                
-                                <!-- <h4 class="card-title">
-                                    <small style="font-size: 0.5em;">{{ report.timestamp|timesince }} ago</small>
-                                    <span class="badge badge-primary float-right" id="verifies_{{ report.id }}">{{ report.verifies.count }}</span>
-                                </h4>
-                                <hr class="my-3">
-                                <ul class="list-unstyled">
-                                    {% if report.reporter == request.user %}
-                                        <li>Reporter : You</a></li>
-                                    {% else %}
-                                        <li>Reporter : <a href="{% url 'user:reporter-detail' report.reporter %}">{{ report.reporter }}</a></li>
-                                    {% endif %}
-                                        
-                                    <li>Location : {{ report.address }}</li>
-                                </ul>
-                                 -->
                                 <hr>
 
                                 <span class="badge badge-pill badge-primary">{{ report.status }}</span>
@@ -160,7 +96,6 @@
                                 <div class="float-right">
                                     <a class="btn btn-outline-primary btn-sm" href="{% url 'report:report-details' report.id %}">
                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                        <!-- &nbspDetails -->
                                     </a>
                                     <button
                                         id="verify_btn_{{report.id}}"
@@ -176,14 +111,6 @@
                                     >
 
                                     <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                    <!-- &nbsp -->
-                                    <span id="VerifyUnverify{{report.id}}">
-                                        {% if request.user in report.verifies.all %}
-                                            <!-- Unverify -->
-                                        {% else %}
-                                            <!-- Verify -->
-                                        {% endif %}
-                                    </span>
                                     </button>
                                 </div>
                             </div>

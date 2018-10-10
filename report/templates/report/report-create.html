@@ -11,7 +11,9 @@
                     <div class="card-body">
                         <h5 class="card-title">Report An Emergency</h5>
                         <hr />
-                        <form method="post">
+
+                        <form action="{% url "report:report-create" %}" method="post"
+          enctype="multipart/form-data">
                             {% csrf_token %}
                             {% for field in form %}
                                 <div class="form-group">
@@ -19,6 +21,10 @@
                                     {{ field.errors }}
                                 </div>
                             {% endfor %}
+
+                            <!-- <input id="source" name="source" type="file" accept="image/*">
+                            <br> -->
+
                             <a href="" class="btn btn-sm btn-info btn-block" data-toggle="modal" data-target="#mapModal">Change Location</a>
                             <button type="submit" class="btn btn-primary btn-block" id="id_reportsubmit">Submit</button>
                             {% if not request.user.is_superuser %}

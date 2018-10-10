@@ -1,6 +1,10 @@
 import geocoder
 import threading
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -10,6 +14,32 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .utils import nearby_responder
 from user.models import Reporter, Notification
+
+cloudinary.config( 
+  cloud_name = "nthnyvllflrs", 
+  api_key = "751561493749527", 
+  api_secret = "QmDSPjbnPlDTLCLuySiiA0wQg6s" 
+)
+
+
+
+from django import forms
+from django.http import HttpResponse
+
+from cloudinary.forms import cl_init_js_callbacks      
+from .models import Photo
+from .forms import PhotoForm
+
+def upload(request):
+  context = dict( backend_form = PhotoForm())
+
+  if request.method == 'POST':
+    form = PhotoForm(request.POST, request.FILES)
+    context['posted'] = form.instance
+    if form.is_valid():
+        form.save()
+
+  return render(request, 'report/upload.html', context)
 
 @login_required
 def report_create(request):
@@ -34,9 +64,10 @@ def report_create(request):
       can_report = True
 
     if request.method == 'POST':
-      form = ReportForm(request.POST)
+      form = ReportForm(request.POST, request.FILES)
       if form.is_valid():
         report = form.save(commit=False)
+        
         report.reporter = request.user
 
         # Reverse GeoCoding
@@ -52,6 +83,7 @@ def report_create(request):
         t.start()
         
         report_created = True
+
     else:
       if request.user.is_superuser:
         form = ReportForm(initial={

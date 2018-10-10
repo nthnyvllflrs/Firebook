@@ -9,6 +9,7 @@ urlpatterns = [
     path('create/', report_create, name='report-create'),
     path('timeline/', report_timeline, name='report-timeline'),
     path('cleared/', report_cleared, name='report-cleared'),
+    path('sample/', upload, name='report-sample'),
     
     path('<int:pk>/', report_detail, name='report-details'),
     path('<int:pk>/verify/', report_verify_toggle, name='report-verify-toggle'),

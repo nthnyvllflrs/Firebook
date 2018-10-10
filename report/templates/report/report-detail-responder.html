@@ -19,6 +19,9 @@
                         <li class="list-group-item">Verifies : <span id="verifies_{{ object.id }}">{{ object.verifies.count }}</span></li>
                         <li class="list-group-item">Status : <span class="badge badge-pill badge-primary" id="status_{{ object.id }}">{{ object.status }}</span></li>
                         <li class="list-group-item">
+                            <button type="button" class="btn btn-block btn-primary btn-sm font-weight-bold" data-toggle="modal" data-target="#myModal">
+                                View Image
+                            </button>
                             {% if is_responder and not request.user in object.responder.all %}
                                 <a 
                                     class="btn-respond btn btn-block btn-primary btn-sm font-weight-bold"
@@ -80,6 +83,18 @@
                 </div>
                 <div class="col-sm-12">
                     <div id="directionsPanel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ object.image.url }}" class="img-responsive" style="">
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-block btn-secondary btn-sm font-weight-bold" data-dismiss="modal" href="">Close</a>
                 </div>
             </div>
         </div>

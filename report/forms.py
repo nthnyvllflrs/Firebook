@@ -9,13 +9,24 @@ EMERGENCY_CHOICES = {
     ('Fire', 'Fire'),
 }
 
+    
+from .models import Photo
+
+class PhotoForm(forms.ModelForm):
+  class Meta:
+    model = Photo
+    fields = (
+      'image',
+    ) 
+
+
 class ReportForm(forms.ModelForm):
   emergency = forms.ChoiceField(choices=EMERGENCY_CHOICES, widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Emergency'}))
 
   class Meta:
     model = Report
     fields = (
-      'emergency', 'details', 'latitude', 'longitude', 'address',
+      'emergency', 'details', 'latitude', 'longitude', 'address', 'image',
     ) 
 
     widgets = {

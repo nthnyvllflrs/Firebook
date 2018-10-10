@@ -21,24 +21,22 @@
                             <button type="button" class="btn btn-block btn-primary btn-sm font-weight-bold" data-toggle="modal" data-target="#myModal">
                                 View Image
                             </button>
-                            <a
-                                class="btn-verify btn btn-block btn-primary btn-sm font-weight-bold"
+
+                            <button
+                                id="verify_btn_{{object.id}}"
+                                {% if request.user in object.verifies.all %}
+                                    class="btn-verify btn btn-block btn-primary btn-sm font-weight-bold"
+                                {% else %}
+                                    class="btn-verify btn btn-block btn-outline-primary btn-sm font-weight-bold"
+                                {% endif %}
+
                                 href="#"
                                 data-href="{% url 'report:report-verify-toggle' object.id %}"
                                 data-verifies="{{ object.verifies.count }}"
                                 data-reportID="{{ object.id }}"
                             >
-
                                 <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                &nbsp
-                                <span id="VerifyUnverify{{object.id}}">
-                                    {% if request.user in object.verifies.all %}
-                                        Unverify
-                                    {% else %}
-                                        Verify
-                                    {% endif %}
-                                </span>
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>  

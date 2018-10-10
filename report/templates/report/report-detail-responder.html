@@ -41,7 +41,7 @@
                                     Cleared
                                 </a>
                             {% endif %}
-                            <a
+                            <!-- <a
                                 class="btn-verify btn btn-block btn-primary btn-sm font-weight-bold"
                                 href="#"
                                 data-href="{% url 'report:report-verify-toggle' object.id %}"
@@ -58,7 +58,22 @@
                                         Verify
                                     {% endif %}
                                 </span>
-                            </a>
+                            </a> -->
+                            <button
+                                id="verify_btn_{{object.id}}"
+                                {% if request.user in object.verifies.all %}
+                                    class="btn-verify btn btn-block btn-primary btn-sm font-weight-bold"
+                                {% else %}
+                                    class="btn-verify btn btn-block btn-outline-primary btn-sm font-weight-bold"
+                                {% endif %}
+
+                                href="#"
+                                data-href="{% url 'report:report-verify-toggle' object.id %}"
+                                data-verifies="{{ object.verifies.count }}"
+                                data-reportID="{{ object.id }}"
+                            >
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                            </button>
                         </li>
                     </ul>
                 </div>  

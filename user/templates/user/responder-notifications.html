@@ -5,7 +5,7 @@
   <div class="row mt-4">
     <div class="col-sm-6 offset-sm-3">
       <div class="col-sm-12">
-        <h4>Notifications</h4>
+        <h5>Notifications</h5>
         <hr />
         <div class="col-sm-12">
           <ul class="list-group">
@@ -14,7 +14,7 @@
               <li class="list-group-item mb-2">
                 <strong>
                   {{notification.title}}
-                  <a href="{% url 'user:reporter-detail' notification.sender %}">{{notification.sender}}</a>
+                  <a href="{% url 'user:reporter-detail' notification.sender %}">@{{notification.sender}}</a>
                 </strong>
                 {{notification.report.timestamp|timesince}} ago 
                 

@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import send_mail # Email
+from django.core.mail import EmailMessage, send_mail # Email
 
 def send_reporter_welcome_email(instance):
 	email_subject = "Welcome To Reportbook!"
@@ -33,7 +33,13 @@ Reportbook
 """ % (instance.username, instance.username, instance.first_name, instance.last_name, instance.email, instance.email,)
 	recipients_list = (instance.email,)
 	email_from = settings.EMAIL_HOST_USER
-	send_mail(email_subject, email_body, email_from, recipients_list)
+	# send_mail(email_subject, email_body, email_from, recipients_list)
+
+	email = EmailMessage(
+		subject = email_subject, body = email_body, from_email = email_from,
+		to = recipients_list, reply_to = recipients_list
+	)
+	sent = email.send(fail_silently=False)
 	return True
 
 def send_responder_welcome_email(instance):
@@ -60,5 +66,11 @@ Reportbook
 
 	recipients_list = (instance.email,)
 	email_from = settings.EMAIL_HOST_USER
-	send_mail(email_subject, email_body, email_from, recipients_list)
+	# send_mail(email_subject, email_body, email_from, recipients_list)
+
+	email = EmailMessage(
+		subject = email_subject, body = email_body, from_email = email_from,
+		to = recipients_list, reply_to = recipients_list
+	)
+	sent = email.send(fail_silently=False)
 	return True

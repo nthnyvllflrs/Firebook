@@ -30,7 +30,7 @@ def reporter_signup(request):
         address='Veterans Ave, Zamboanga, Zamboanga del Sur, Philippines',
       )
 
-      send_reporter_welcome_email(user)
+      # send_reporter_welcome_email(user)
 
       account_created = True
   else:
@@ -59,7 +59,7 @@ def responder_signup(request):
         address = form.cleaned_data.get('address'),
       )
 
-      send_responder_welcome_email(user)
+      # send_responder_welcome_email(user)
 
       account_created = True
   else:

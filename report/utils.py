@@ -1,11 +1,11 @@
 from math import sin, cos, sqrt, atan2, radians
 from django.conf import settings
-from twilio.rest import Client
+# from twilio.rest import Client
 
 from .models import Report
 from user.models import Responder, Reporter, Notification, Fighter
 
-client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
+# client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
 
 
 def nearby_responder(report):
@@ -28,15 +28,15 @@ def nearby_responder(report):
 
         # Send Notication To Responder
         for responder in report_responder:
-            construct_and_send_sms(report, responder) # SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
+            # construct_and_send_sms(report, responder) # SMS NOTIFICATION FUNCTION, ENABLE ON DEFENSE
             Notification.objects.create(sender=report.reporter, recipient=responder.user, report=report, title='Report Notification')
             
-            for fighter in Fighter.objects.filter(responder=responder):
-                client.messages.create(
-                    to      = fighter.phone_number,
-                    from_   = settings.TWILIO_PHONE_NUMBER,
-                    body    = 'Nearby Report Notification\nResponder : %s \nReport # : %s \nReporter : %s \nAddress : %s' % (responder.user.username, report.id, report.reporter, report.address)
-                )
+            # for fighter in Fighter.objects.filter(responder=responder):
+            #     client.messages.create(
+            #         to      = fighter.phone_number,
+            #         from_   = settings.TWILIO_PHONE_NUMBER,
+            #         body    = 'Nearby Report Notification\nResponder : %s \nReport # : %s \nReporter : %s \nAddress : %s' % (responder.user.username, report.id, report.reporter, report.address)
+            #     )
             # report.responder.add(responder.user)
 
     if reporter_list:
@@ -56,11 +56,11 @@ def nearby_responder(report):
 def construct_and_send_sms(report, responder):
     """A FUNCTION CONSTRUCT AND SEND SMS NOTIFICATION"""
 
-    client.messages.create(
-        to      = responder.phone_number,
-        from_   = settings.TWILIO_PHONE_NUMBER,
-        body    = 'Nearby Report Notification\nResponder : %s \nReport # : %s \nReporter : %s \nAddress : %s' % (responder.user.username, report.id, report.reporter, report.address)
-    ) # Send SMS Notification to nearby responder
+    # client.messages.create(
+    #     to      = responder.phone_number,
+    #     from_   = settings.TWILIO_PHONE_NUMBER,
+    #     body    = 'Nearby Report Notification\nResponder : %s \nReport # : %s \nReporter : %s \nAddress : %s' % (responder.user.username, report.id, report.reporter, report.address)
+    # ) # Send SMS Notification to nearby responder
 
 
 def calculate_distance(report_lat, report_lng, responder_lat, responder_lng):

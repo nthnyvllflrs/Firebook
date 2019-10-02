@@ -160,12 +160,12 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'CapstoneTechnopreneurship@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') 
+EMAIL_HOST_PASSWORD = 'qhqx8sl!'
 
 # TWILIO Settings
-TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
-ACCOUNT_SID         = os.environ.get('ACCOUNT_SID')
-AUTH_TOKEN          = os.environ.get('AUTH_TOKEN')
+# TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
+# ACCOUNT_SID         = os.environ.get('ACCOUNT_SID')
+# AUTH_TOKEN          = os.environ.get('AUTH_TOKEN')
 
 # GOOGLE MAP API
 GOOGLE_MAP_API_KEY  = os.environ.get('GOOGLE_MAP_API_KEY')

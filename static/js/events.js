@@ -62,7 +62,7 @@ $('.btn-verify').click(function(e){
             $("#verify_btn_"+reportID).attr("disabled", false) 
         },
         error: function(e){
-            // console.log(e.message)
+            console.log(e.message)
         }
     })
 })
@@ -83,7 +83,7 @@ $('.btn-status').click(function(e){
             $(".btn-status").attr("hidden", "hidden")
         },
         error: function(e){
-            // console.log(e.message)
+            console.log(e.message)
         }
     })
 })
@@ -100,11 +100,12 @@ $('.btn-respond').click(function(e){
         method: 'GET',
         data: {},
         success: function(data){
+            console.log(data)
             $(".btn-respond").attr("hidden", "hidden")
             window.location.href=window.location.href
         },
         error: function(e){
-            // console.log(e.message)
+            console.log(e.message)
         }
     })
 })
